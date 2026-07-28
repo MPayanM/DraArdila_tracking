@@ -18,7 +18,7 @@ import {
   getEntries,
   type Entry,
   type Patient,
-} from "@/lib/local-store";
+} from "@/lib/data";
 
 export function PatientTracker({
   patient,
@@ -29,7 +29,9 @@ export function PatientTracker({
 }) {
   const today = todayISO();
   const [date, setDate] = useState(today);
-  const [entries, setEntries] = useState<Entry[]>(() => getEntries(patient.id));
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [loadingEntries, setLoadingEntries] = useState(true);
+  const [savingMoment, setSavingMoment] = useState<Moment | null>(null);
   const [drafts, setDrafts] = useState<Record<Moment, { done: boolean; food: string }>>(
     () => emptyDrafts()
   );
@@ -39,6 +41,11 @@ export function PatientTracker({
       MOMENTS.map((m) => [m.id, { done: false, food: "" }])
     ) as Record<Moment, { done: boolean; food: string }>;
   }
+
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [patient.id]);
 
   useEffect(() => {
     const next = emptyDrafts();
@@ -51,46 +58,70 @@ export function PatientTracker({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, entries]);
 
-  function refresh() {
-    setEntries(getEntries(patient.id));
+  async function refresh() {
+    try {
+      const next = await getEntries(patient.id);
+      setEntries(next);
+    } catch {
+      toast.error("No se pudieron cargar tus registros");
+    } finally {
+      setLoadingEntries(false);
+    }
   }
 
-  function saveMoment(moment: Moment) {
+  async function saveMoment(moment: Moment) {
     const draft = drafts[moment];
     const existing = entries.find((e) => e.date === date && e.moment === moment);
 
-    if (!draft.done) {
-      if (existing) {
-        deleteEntry(existing.id);
-        refresh();
-        toast.success(`${momentLabel(moment)} eliminado para esa fecha`);
+    setSavingMoment(moment);
+    try {
+      if (!draft.done) {
+        if (existing) {
+          await deleteEntry(existing.id);
+          await refresh();
+          toast.success(`${momentLabel(moment)} eliminado para esa fecha`);
+        }
+        return;
       }
-      return;
-    }
 
-    if (!draft.food.trim()) {
-      toast.error("Escribe qué alimento comiste antes de guardar");
-      return;
-    }
+      if (!draft.food.trim()) {
+        toast.error("Escribe qué alimento comiste antes de guardar");
+        return;
+      }
 
-    addEntry({
-      patientId: patient.id,
-      date,
-      moment,
-      food: draft.food.trim(),
-    });
-    refresh();
-    toast.success(`${momentLabel(moment)} guardado`);
+      await addEntry({
+        patientId: patient.id,
+        date,
+        moment,
+        food: draft.food.trim(),
+      });
+      await refresh();
+      toast.success(`${momentLabel(moment)} guardado`);
+    } catch {
+      toast.error("No se pudo guardar. Intenta de nuevo.");
+    } finally {
+      setSavingMoment(null);
+    }
   }
 
-  function handleDelete(entry: Entry) {
-    deleteEntry(entry.id);
-    refresh();
-    toast.success("Registro eliminado");
+  async function handleDelete(entry: Entry) {
+    try {
+      await deleteEntry(entry.id);
+      await refresh();
+      toast.success("Registro eliminado");
+    } catch {
+      toast.error("No se pudo eliminar. Intenta de nuevo.");
+    }
   }
 
-  const compliance7 = useMemo(() => computeCompliance(patient, 7), [entries, patient]);
-  const compliance30 = useMemo(() => computeCompliance(patient, 30), [entries, patient]);
+  const compliance7 = useMemo(
+    () => computeCompliance(patient, entries, 7),
+    [entries, patient]
+  );
+  const compliance30 = useMemo(
+    () => computeCompliance(patient, entries, 30),
+    [entries, patient]
+  );
 
   const history = useMemo(
     () =>
@@ -184,8 +215,13 @@ export function PatientTracker({
                   }
                   className="flex-1"
                 />
-                <Button size="sm" variant="outline" onClick={() => saveMoment(m.id)}>
-                  Guardar
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={savingMoment === m.id}
+                  onClick={() => saveMoment(m.id)}
+                >
+                  {savingMoment === m.id ? "Guardando..." : "Guardar"}
                 </Button>
               </div>
             );
@@ -200,7 +236,10 @@ export function PatientTracker({
           </p>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
-          {history.length === 0 && (
+          {loadingEntries && (
+            <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>
+          )}
+          {!loadingEntries && history.length === 0 && (
             <p className="py-6 text-center text-sm text-ink-soft">
               Aún no tienes registros.
             </p>

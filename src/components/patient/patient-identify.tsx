@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,14 +11,21 @@ import { Label } from "@/components/ui/label";
 export function PatientIdentify({
   onIdentify,
 }: {
-  onIdentify: (name: string) => void;
+  onIdentify: (name: string) => Promise<void>;
 }) {
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
-    onIdentify(name.trim());
+    setLoading(true);
+    try {
+      await onIdentify(name.trim());
+    } catch {
+      toast.error("No se pudo conectar. Intenta de nuevo.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -59,10 +67,10 @@ export function PatientIdentify({
             </div>
             <Button
               type="submit"
-              disabled={!name.trim()}
+              disabled={!name.trim() || loading}
               className="brand-gradient text-white hover:opacity-90"
             >
-              Continuar
+              {loading ? "Cargando..." : "Continuar"}
             </Button>
             <p className="text-center text-xs leading-relaxed text-ink-soft">
               Tu nombre se usa solo para identificar tus registros de ejercicio.

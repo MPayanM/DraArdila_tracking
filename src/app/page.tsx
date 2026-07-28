@@ -9,7 +9,7 @@ import {
   getPatient,
   setCurrentPatientId,
   type Patient,
-} from "@/lib/local-store";
+} from "@/lib/data";
 
 export default function Home() {
   const [patient, setPatient] = useState<Patient | null>(null);
@@ -17,15 +17,19 @@ export default function Home() {
 
   useEffect(() => {
     const id = getCurrentPatientId();
-    if (id) {
-      const existing = getPatient(id);
-      if (existing) setPatient(existing);
+    if (!id) {
+      setReady(true);
+      return;
     }
-    setReady(true);
+    getPatient(id).then((existing) => {
+      if (existing) setPatient(existing);
+      else setCurrentPatientId(null);
+      setReady(true);
+    });
   }, []);
 
-  function handleIdentify(name: string) {
-    const p = getOrCreatePatient(name);
+  async function handleIdentify(name: string) {
+    const p = await getOrCreatePatient(name);
     setCurrentPatientId(p.id);
     setPatient(p);
   }
