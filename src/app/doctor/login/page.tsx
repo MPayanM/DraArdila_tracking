@@ -1,32 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function PatientIdentify({
-  onIdentify,
-}: {
-  onIdentify: (name: string) => Promise<void>;
-}) {
-  const [name, setName] = useState("");
+export default function DoctorLoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) router.replace("/doctor");
+    });
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim()) return;
     setLoading(true);
-    try {
-      await onIdentify(name.trim());
-    } catch {
-      toast.error("No se pudo conectar. Intenta de nuevo.");
-      setLoading(false);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(false);
+    if (error) {
+      toast.error("Credenciales incorrectas");
+      return;
     }
+    router.replace("/doctor");
   }
 
   return (
@@ -42,51 +47,51 @@ export function PatientIdentify({
         />
         <div>
           <h1 className="text-xl font-bold text-brand-purple-dark">
-            Ejercicio de masticación y deglución
+            Panel de la doctora
           </h1>
-          <p className="text-sm text-ink-soft">Dra. Sandra Ardila · Fonoaudióloga</p>
+          <p className="text-sm text-ink-soft">Acceso exclusivo para Dra. Sandra Ardila</p>
         </div>
       </div>
 
       <Card className="w-full max-w-sm border-border">
         <CardHeader>
           <p className="text-sm font-semibold text-brand-purple-dark">
-            Ingresa tu nombre para continuar
+            Inicia sesión
           </p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="patient-name">Nombre completo</Label>
+              <Label htmlFor="email">Correo</Label>
               <Input
-                id="patient-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ej. Ana María Gómez"
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoFocus
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="password">Contraseña</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
             <Button
               type="submit"
-              disabled={!name.trim() || loading}
+              disabled={loading}
               className="brand-gradient text-white hover:opacity-90"
             >
-              {loading ? "Cargando..." : "Continuar"}
+              {loading ? "Ingresando..." : "Ingresar"}
             </Button>
-            <p className="text-center text-xs leading-relaxed text-ink-soft">
-              Tu nombre se usa solo para identificar tus registros de ejercicio.
-              No se requiere contraseña.
-            </p>
           </form>
         </CardContent>
       </Card>
-
-      <Link
-        href="/doctor"
-        className="mt-6 text-xs text-ink-soft underline-offset-2 hover:underline"
-      >
-        Acceso para la doctora
-      </Link>
     </div>
   );
 }

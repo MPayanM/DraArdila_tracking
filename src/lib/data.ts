@@ -142,6 +142,70 @@ export async function deleteEntry(id: string): Promise<void> {
   if (error) throw error;
 }
 
+// --- Doctor-facing operations ---
+
+export async function getAllPatients(): Promise<Patient[]> {
+  const { data, error } = await supabase
+    .from("patients")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data as PatientRow[]).map(toPatient);
+}
+
+export async function getEntriesSince(sinceISODate: string): Promise<Entry[]> {
+  const { data, error } = await supabase
+    .from("entries")
+    .select("*")
+    .gte("date", sinceISODate)
+    .order("date", { ascending: false });
+  if (error) throw error;
+  return (data as EntryRow[]).map(toEntry);
+}
+
+export async function addPatientManual(input: {
+  name: string;
+  phone?: string;
+  email?: string;
+}): Promise<Patient> {
+  const { data, error } = await supabase
+    .from("patients")
+    .insert({
+      name: input.name.trim(),
+      phone: input.phone?.trim() || null,
+      email: input.email?.trim() || null,
+      required_moments: MOMENTS.map((m) => m.id),
+    })
+    .select("*")
+    .single();
+  if (error) throw error;
+  return toPatient(data as PatientRow);
+}
+
+export async function deletePatient(id: string): Promise<void> {
+  const { error } = await supabase.from("patients").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function updatePatient(
+  id: string,
+  patch: { requiredMoments?: Moment[]; treatmentEndDate?: string | null }
+): Promise<Patient> {
+  const update: Record<string, unknown> = {};
+  if (patch.requiredMoments) update.required_moments = patch.requiredMoments;
+  if (patch.treatmentEndDate !== undefined)
+    update.treatment_end_date = patch.treatmentEndDate;
+
+  const { data, error } = await supabase
+    .from("patients")
+    .update(update)
+    .eq("id", id)
+    .select("*")
+    .single();
+  if (error) throw error;
+  return toPatient(data as PatientRow);
+}
+
 export function computeCompliance(
   patient: Patient,
   entries: Entry[],
