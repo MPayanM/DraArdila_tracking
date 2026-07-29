@@ -14,7 +14,7 @@ export function Hero() {
         <span className="aurora-blob" />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:py-28">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:gap-6 lg:py-28">
         <motion.div
           initial={{ opacity: 0, y: reduce ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -31,9 +31,9 @@ export function Hero() {
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             Una plataforma clínica para prescribir el ejercicio de masticación
-            y deglución, y ver en tiempo real si cada paciente lo está
-            cumpliendo — sin planillas, sin llamadas de seguimiento, sin
-            adivinar.
+            y deglución y ver, en tiempo real, si cada paciente lo está
+            cumpliendo. Sin planillas, sin llamadas de seguimiento y sin
+            tener que adivinar.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -60,7 +60,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: reduce ? 1 : 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="relative mx-auto aspect-square w-full max-w-md"
+          className="relative mx-auto aspect-square w-full max-w-2xl lg:max-w-none"
         >
           <HeroOrbCanvas className="h-full w-full" />
         </motion.div>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -131,146 +132,155 @@ export function PatientTracker({
   );
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
-      <header className="flex items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/fono.webp"
-            alt="Logo Dra. Sandra Ardila"
-            width={44}
-            height={44}
-            className="rounded-xl shadow-sm"
-          />
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
-              Hola,
+    <div className="relative isolate flex-1 overflow-hidden">
+      <div className="aurora-bg opacity-30" aria-hidden />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
+        <motion.header
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center justify-between gap-3"
+        >
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/fono.webp"
+              alt="Logo Dra. Sandra Ardila"
+              width={64}
+              height={64}
+              className="rounded-2xl shadow-md"
+            />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                Hola,
+              </p>
+              <h1 className="font-display text-2xl font-medium text-ink">
+                {patient.name}
+              </h1>
+            </div>
+          </Link>
+          <Button variant="ghost" size="sm" onClick={onSwitchPatient}>
+            No soy {patient.name.split(" ")[0]}
+          </Button>
+        </motion.header>
+
+        <Card className="glass-panel rounded-3xl">
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
+            <p className="font-heading text-sm font-semibold text-brand-purple-dark">
+              Tu cumplimiento
             </p>
-            <h1 className="font-heading text-lg font-bold text-brand-purple-dark">
-              {patient.name}
-            </h1>
-          </div>
-        </Link>
-        <Button variant="ghost" size="sm" onClick={onSwitchPatient}>
-          No soy {patient.name.split(" ")[0]}
-        </Button>
-      </header>
+          </CardHeader>
+          <CardContent className="flex gap-6">
+            <ComplianceStat label="Últimos 7 días" value={compliance7} />
+            <ComplianceStat label="Últimos 30 días" value={compliance30} />
+          </CardContent>
+        </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between gap-3">
-          <p className="font-heading text-sm font-semibold text-brand-purple-dark">
-            Tu cumplimiento
-          </p>
-        </CardHeader>
-        <CardContent className="flex gap-6">
-          <ComplianceStat label="Últimos 7 días" value={compliance7} />
-          <ComplianceStat label="Últimos 30 días" value={compliance30} />
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between gap-3">
-          <p className="font-heading text-sm font-semibold text-brand-purple-dark">
-            Registrar ejercicio
-          </p>
-          <Input
-            type="date"
-            value={date}
-            max={today}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-auto"
-          />
-        </CardHeader>
-        <CardContent className="flex flex-col gap-3">
-          {MOMENTS.map((m) => {
-            const draft = drafts[m.id];
-            return (
-              <div
-                key={m.id}
-                className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-3 sm:flex-row sm:items-center"
-              >
-                <div className="flex min-w-[170px] items-center gap-2">
-                  <Checkbox
-                    id={`moment-${m.id}`}
-                    checked={draft.done}
-                    onCheckedChange={(checked) =>
+        <Card className="glass-panel rounded-3xl">
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
+            <p className="font-heading text-sm font-semibold text-brand-purple-dark">
+              Registrar ejercicio
+            </p>
+            <Input
+              type="date"
+              value={date}
+              max={today}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-auto"
+            />
+          </CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            {MOMENTS.map((m) => {
+              const draft = drafts[m.id];
+              return (
+                <div
+                  key={m.id}
+                  className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-3 sm:flex-row sm:items-center"
+                >
+                  <div className="flex min-w-[170px] items-center gap-2">
+                    <Checkbox
+                      id={`moment-${m.id}`}
+                      checked={draft.done}
+                      onCheckedChange={(checked) =>
+                        setDrafts((prev) => ({
+                          ...prev,
+                          [m.id]: { ...prev[m.id], done: checked === true },
+                        }))
+                      }
+                    />
+                    <Label htmlFor={`moment-${m.id}`} className="font-heading font-semibold">
+                      <span className="mr-1">{m.icon}</span>
+                      {m.label}
+                    </Label>
+                  </div>
+                  <Input
+                    placeholder="¿Qué comiste?"
+                    value={draft.food}
+                    disabled={!draft.done}
+                    onChange={(e) =>
                       setDrafts((prev) => ({
                         ...prev,
-                        [m.id]: { ...prev[m.id], done: checked === true },
+                        [m.id]: { ...prev[m.id], food: e.target.value },
                       }))
                     }
+                    className="flex-1"
                   />
-                  <Label htmlFor={`moment-${m.id}`} className="font-heading font-semibold">
-                    <span className="mr-1">{m.icon}</span>
-                    {m.label}
-                  </Label>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={savingMoment === m.id}
+                    onClick={() => saveMoment(m.id)}
+                  >
+                    {savingMoment === m.id ? "Guardando..." : "Guardar"}
+                  </Button>
                 </div>
-                <Input
-                  placeholder="¿Qué comiste?"
-                  value={draft.food}
-                  disabled={!draft.done}
-                  onChange={(e) =>
-                    setDrafts((prev) => ({
-                      ...prev,
-                      [m.id]: { ...prev[m.id], food: e.target.value },
-                    }))
-                  }
-                  className="flex-1"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  disabled={savingMoment === m.id}
-                  onClick={() => saveMoment(m.id)}
-                >
-                  {savingMoment === m.id ? "Guardando..." : "Guardar"}
-                </Button>
-              </div>
-            );
-          })}
-        </CardContent>
-      </Card>
+              );
+            })}
+          </CardContent>
+        </Card>
 
-      <Card>
-        <CardHeader>
-          <p className="font-heading text-sm font-semibold text-brand-purple-dark">
-            Historial
-          </p>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
-          {loadingEntries && (
-            <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>
-          )}
-          {!loadingEntries && history.length === 0 && (
-            <p className="py-6 text-center text-sm text-ink-soft">
-              Aún no tienes registros.
+        <Card className="glass-panel rounded-3xl">
+          <CardHeader>
+            <p className="font-heading text-sm font-semibold text-brand-purple-dark">
+              Historial
             </p>
-          )}
-          {history.map((entry, i) => (
-            <div key={entry.id}>
-              {i > 0 && <Separator className="my-2" />}
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                      {momentLabel(entry.moment)}
-                    </Badge>
-                    <span className="text-xs text-ink-soft">{entry.date}</span>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-2">
+            {loadingEntries && (
+              <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>
+            )}
+            {!loadingEntries && history.length === 0 && (
+              <p className="py-6 text-center text-sm text-ink-soft">
+                Aún no tienes registros.
+              </p>
+            )}
+            {history.map((entry, i) => (
+              <div key={entry.id}>
+                {i > 0 && <Separator className="my-2" />}
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="bg-accent text-accent-foreground">
+                        {momentLabel(entry.moment)}
+                      </Badge>
+                      <span className="text-xs text-ink-soft">{entry.date}</span>
+                    </div>
+                    <p className="text-sm">{entry.food}</p>
                   </div>
-                  <p className="text-sm">{entry.food}</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-ink-soft hover:text-brand-magenta"
+                    onClick={() => handleDelete(entry)}
+                  >
+                    Eliminar
+                  </Button>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-ink-soft hover:text-brand-magenta"
-                  onClick={() => handleDelete(entry)}
-                >
-                  Eliminar
-                </Button>
               </div>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

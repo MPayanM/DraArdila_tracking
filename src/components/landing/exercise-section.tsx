@@ -1,5 +1,5 @@
 import { MOMENTS } from "@/lib/moments";
-import { Reveal } from "./reveal";
+import { Reveal } from "@/components/reveal";
 
 export function ExerciseSection() {
   return (
@@ -10,9 +10,9 @@ export function ExerciseSection() {
         </h2>
         <p className="mt-4 text-lg leading-relaxed text-ink-soft">
           En cada comida, el paciente mastica y traga con un pequeño trozo de
-          caucho en la punta de la lengua — entrenando que la lengua descanse
-          en el paladar y que, al tragar, los dientes cierren y la lengua se
-          mantenga arriba.
+          caucho en la punta de la lengua. Así se entrena que la lengua
+          descanse en el paladar y que, al tragar, los dientes cierren y la
+          lengua se mantenga arriba.
         </p>
       </Reveal>
 
@@ -31,7 +31,7 @@ export function ExerciseSection() {
 
       <Reveal delay={0.2} className="mt-6 text-center text-sm text-ink-soft">
         La doctora decide cuáles de estos 5 momentos aplican para cada
-        paciente — el cumplimiento se calcula solo contra lo prescrito.
+        paciente, y el cumplimiento se calcula solo contra lo prescrito.
       </Reveal>
     </section>
   );

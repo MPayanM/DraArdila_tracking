@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { HeroOrbCanvas } from "@/components/three/hero-orb-canvas";
 
 export default function DoctorLoginPage() {
   const router = useRouter();
@@ -37,28 +38,39 @@ export default function DoctorLoginPage() {
   }
 
   return (
-    <div className="relative isolate flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-10">
-      <div className="aurora-bg opacity-60" aria-hidden />
+    <div className="relative isolate flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-14">
+      <div className="aurora-bg opacity-80" aria-hidden>
+        <span className="aurora-blob" />
+      </div>
+
+      <div
+        className="pointer-events-none absolute -left-24 -top-10 z-0 h-[26rem] w-[26rem] opacity-40 blur-[2px] sm:opacity-55 lg:-left-10"
+        aria-hidden
+      >
+        <HeroOrbCanvas className="h-full w-full" />
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 mb-6 flex flex-col items-center gap-3 text-center"
+        className="relative z-10 mb-6 flex flex-col items-center gap-4 text-center"
       >
         <Image
           src="/fono.webp"
           alt="Logo Dra. Sandra Ardila"
-          width={72}
-          height={72}
-          className="rounded-2xl shadow-sm"
+          width={128}
+          height={128}
+          className="rounded-3xl shadow-lg ring-1 ring-border/60"
           priority
         />
         <div>
-          <h1 className="font-display text-2xl font-medium text-ink">
+          <h1 className="font-display text-3xl font-medium text-ink sm:text-4xl">
             Panel de la doctora
           </h1>
-          <p className="text-sm text-ink-soft">Acceso exclusivo para Dra. Sandra Ardila</p>
+          <p className="mt-1 text-sm text-ink-soft">
+            Acceso exclusivo para Dra. Sandra Ardila
+          </p>
         </div>
       </motion.div>
 

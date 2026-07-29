@@ -131,7 +131,7 @@ export default function DoctorDashboard() {
       </div>
 
       {newPatients.length > 0 && (
-        <Card>
+        <Card className="glass-panel rounded-3xl">
           <CardHeader>
             <p className="font-heading text-sm font-semibold text-brand-purple-dark">
               Nuevos pacientes (últimos 7 días)
@@ -152,7 +152,7 @@ export default function DoctorDashboard() {
         </Card>
       )}
 
-      <Card>
+      <Card className="glass-panel rounded-3xl">
         <CardHeader>
           <p className="font-heading text-sm font-semibold text-brand-purple-dark">
             Agregar paciente
@@ -201,7 +201,7 @@ export default function DoctorDashboard() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="glass-panel rounded-3xl">
         <CardHeader>
           <p className="font-heading text-sm font-semibold text-brand-purple-dark">
             Todos los pacientes

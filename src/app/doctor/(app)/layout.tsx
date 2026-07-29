@@ -34,18 +34,19 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="mx-auto flex w-full max-w-4xl items-center justify-between px-4 py-3">
+    <div className="relative isolate flex flex-1 flex-col overflow-hidden bg-background">
+      <div className="aurora-bg opacity-20" aria-hidden />
+      <header className="glass-panel relative z-10 border-b border-border/60">
+        <div className="mx-auto flex w-full max-w-4xl items-center justify-between px-4 py-2.5">
           <Link href="/doctor" className="flex items-center gap-3">
             <Image
               src="/fono.webp"
               alt="Logo Dra. Sandra Ardila"
-              width={36}
-              height={36}
-              className="rounded-lg shadow-sm"
+              width={52}
+              height={52}
+              className="rounded-xl shadow-sm"
             />
-            <span className="font-heading text-sm font-bold text-brand-purple-dark">
+            <span className="font-heading text-base font-bold text-brand-purple-dark">
               Panel de la doctora
             </span>
           </Link>
@@ -54,7 +55,9 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
           </Button>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">{children}</main>
+      <main className="relative z-10 mx-auto w-full max-w-4xl flex-1 px-4 py-8">
+        {children}
+      </main>
     </div>
   );
 }

@@ -7,17 +7,17 @@ import { Button } from "@/components/ui/button";
 export function LandingNav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 glass-panel">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link href="/" className="flex items-center gap-2.5">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5 sm:px-6">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/fono.webp"
             alt="Logo Dra. Sandra Ardila"
-            width={34}
-            height={34}
-            className="rounded-lg shadow-sm"
+            width={52}
+            height={52}
+            className="rounded-xl shadow-sm"
             priority
           />
-          <span className="font-heading text-sm font-bold text-brand-purple-dark">
+          <span className="font-heading text-base font-bold text-brand-purple-dark">
             Sandra Ardila
           </span>
         </Link>

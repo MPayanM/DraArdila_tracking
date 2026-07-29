@@ -1,11 +1,11 @@
-# Ejercicios de Masticación y Deglución — Dra. Sandra Ardila
+# Ejercicios de Masticación y Deglución (Dra. Sandra Ardila)
 
 App para el registro y seguimiento del ejercicio de masticación y deglución prescrito por la Dra. Sandra Ardila (fonoaudióloga).
 
 ## Stack
 
 - Next.js + Tailwind + shadcn/ui
-- Supabase (Postgres) — ver `supabase/migrations/`
+- Supabase (Postgres), ver `supabase/migrations/`
 - Vercel
 
 ## Desarrollo

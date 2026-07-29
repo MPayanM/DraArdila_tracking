@@ -6,14 +6,14 @@ import {
   SlidersHorizontal,
   Smartphone,
 } from "lucide-react";
-import { Reveal } from "./reveal";
+import { Reveal } from "@/components/reveal";
 
 const FEATURES = [
   {
     icon: SlidersHorizontal,
     title: "Prescripción por paciente",
     description:
-      "Cada paciente tiene sus propios momentos requeridos — el cumplimiento nunca se mide contra un estándar genérico.",
+      "Cada paciente tiene sus propios momentos requeridos, así que el cumplimiento nunca se mide contra un estándar genérico.",
   },
   {
     icon: CalendarClock,
@@ -25,7 +25,7 @@ const FEATURES = [
     icon: BellRing,
     title: "Pacientes nuevos, al instante",
     description:
-      "Un panel simple muestra quién se unió en los últimos 7 días — sin revisar la lista completa.",
+      "Un panel simple muestra quién se unió en los últimos 7 días, sin tener que revisar la lista completa.",
   },
   {
     icon: Download,
@@ -37,7 +37,7 @@ const FEATURES = [
     icon: Smartphone,
     title: "Sin instalar nada",
     description:
-      "Funciona como app web desde el celular del paciente — se agrega a la pantalla de inicio como un ícono más.",
+      "Funciona como app web desde el celular del paciente y se agrega a la pantalla de inicio como un ícono más.",
   },
   {
     icon: ShieldCheck,

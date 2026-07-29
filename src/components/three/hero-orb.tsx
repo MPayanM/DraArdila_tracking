@@ -53,7 +53,7 @@ function SatelliteOrb({
   spin: boolean;
 }) {
   return (
-    <Float speed={spin ? 1.4 : 0} floatIntensity={spin ? 1.6 : 0} rotationIntensity={spin ? 0.6 : 0}>
+    <Float speed={spin ? 1.4 : 0} floatIntensity={spin ? 0.7 : 0} rotationIntensity={spin ? 0.6 : 0}>
       <Sphere args={[scale, 64, 64]} position={position}>
         <MeshDistortMaterial
           color={color}
@@ -75,7 +75,7 @@ export function HeroOrb() {
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 5.2], fov: 42 }}
+      camera={{ position: [0, 0, 7.2], fov: 38 }}
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
     >
@@ -84,11 +84,11 @@ export function HeroOrb() {
       <pointLight position={[-4, -2, 3]} intensity={70} color="#c99b3f" />
       <directionalLight position={[0, 4, 2]} intensity={0.6} color="#ffffff" />
 
-      <Float speed={spin ? 1 : 0} floatIntensity={spin ? 0.8 : 0} rotationIntensity={0.15}>
+      <Float speed={spin ? 1 : 0} floatIntensity={spin ? 0.5 : 0} rotationIntensity={0.15}>
         <CoreOrb spin={spin} />
       </Float>
-      <SatelliteOrb position={[1.9, 1.1, -0.6]} color="#c3287d" scale={0.42} spin={spin} />
-      <SatelliteOrb position={[-1.7, -1.2, 0.4]} color="#c99b3f" scale={0.3} spin={spin} />
+      <SatelliteOrb position={[1.5, 1.0, -0.4]} color="#c3287d" scale={0.4} spin={spin} />
+      <SatelliteOrb position={[-1.4, -1.0, 0.3]} color="#c99b3f" scale={0.28} spin={spin} />
     </Canvas>
   );
 }

@@ -1,12 +1,12 @@
 import { ClipboardCheck, LineChart, UserRound } from "lucide-react";
-import { Reveal } from "./reveal";
+import { Reveal } from "@/components/reveal";
 
 const STEPS = [
   {
     icon: UserRound,
     title: "La doctora prescribe",
     description:
-      "Agrega al paciente y define qué momentos del día debe cumplir — no todos necesitan los 5.",
+      "Agrega al paciente y define qué momentos del día debe cumplir, porque no todos necesitan los 5.",
   },
   {
     icon: ClipboardCheck,

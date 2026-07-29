@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "./reveal";
+import { Reveal } from "@/components/reveal";
 
 export function ProfessionalCta() {
   return (

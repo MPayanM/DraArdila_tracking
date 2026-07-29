@@ -128,7 +128,7 @@ export default function PatientDetailPage() {
         )}
       </div>
 
-      <Card>
+      <Card className="glass-panel rounded-3xl">
         <CardHeader>
           <p className="font-heading text-sm font-semibold text-brand-purple-dark">
             Cumplimiento
@@ -150,7 +150,7 @@ export default function PatientDetailPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="glass-panel rounded-3xl">
         <CardHeader>
           <p className="font-heading text-sm font-semibold text-brand-purple-dark">
             Momentos prescritos
@@ -191,7 +191,7 @@ export default function PatientDetailPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="glass-panel rounded-3xl">
         <CardHeader>
           <p className="font-heading text-sm font-semibold text-brand-purple-dark">
             Fecha de fin de tratamiento (opcional)
@@ -219,7 +219,7 @@ export default function PatientDetailPage() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="glass-panel rounded-3xl">
         <CardHeader className="flex flex-row items-center justify-between gap-3">
           <p className="font-heading text-sm font-semibold text-brand-purple-dark">
             Registro detallado
