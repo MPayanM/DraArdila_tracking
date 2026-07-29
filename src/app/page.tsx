@@ -1,55 +1,23 @@
-"use client";
+import { LandingNav } from "@/components/landing/landing-nav";
+import { Hero } from "@/components/landing/hero";
+import { ExerciseSection } from "@/components/landing/exercise-section";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { FeaturesGrid } from "@/components/landing/features-grid";
+import { ProfessionalCta } from "@/components/landing/professional-cta";
+import { LandingFooter } from "@/components/landing/landing-footer";
 
-import { useEffect, useState } from "react";
-import { PatientIdentify } from "@/components/patient/patient-identify";
-import { PatientTracker } from "@/components/patient/patient-tracker";
-import {
-  getCurrentPatientId,
-  getOrCreatePatient,
-  getPatient,
-  setCurrentPatientId,
-  type Patient,
-} from "@/lib/data";
-
-export default function Home() {
-  const [patient, setPatient] = useState<Patient | null>(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const id = getCurrentPatientId();
-    if (!id) {
-      setReady(true);
-      return;
-    }
-    getPatient(id).then((existing) => {
-      if (existing) setPatient(existing);
-      else setCurrentPatientId(null);
-      setReady(true);
-    });
-  }, []);
-
-  async function handleIdentify(name: string) {
-    const p = await getOrCreatePatient(name);
-    setCurrentPatientId(p.id);
-    setPatient(p);
-  }
-
-  function handleSwitchPatient() {
-    setCurrentPatientId(null);
-    setPatient(null);
-  }
-
-  if (!ready) {
-    return <div className="flex flex-1" />;
-  }
-
+export default function LandingPage() {
   return (
     <div className="flex flex-1 flex-col bg-background">
-      {patient ? (
-        <PatientTracker patient={patient} onSwitchPatient={handleSwitchPatient} />
-      ) : (
-        <PatientIdentify onIdentify={handleIdentify} />
-      )}
+      <LandingNav />
+      <main className="flex-1">
+        <Hero />
+        <ExerciseSection />
+        <HowItWorks />
+        <FeaturesGrid />
+        <ProfessionalCta />
+      </main>
+      <LandingFooter />
     </div>
   );
 }

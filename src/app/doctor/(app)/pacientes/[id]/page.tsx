@@ -118,7 +118,7 @@ export default function PatientDetailPage() {
         <Link href="/doctor" className="text-sm text-brand-purple hover:underline">
           ← Volver a pacientes
         </Link>
-        <h1 className="mt-1 font-heading text-2xl font-bold text-brand-purple-dark">
+        <h1 className="mt-1 font-display text-3xl font-medium text-ink">
           {patient.name}
         </h1>
         {(patient.phone || patient.email) && (

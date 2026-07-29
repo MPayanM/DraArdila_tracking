@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -132,7 +133,7 @@ export function PatientTracker({
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
       <header className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/fono.webp"
             alt="Logo Dra. Sandra Ardila"
@@ -148,7 +149,7 @@ export function PatientTracker({
               {patient.name}
             </h1>
           </div>
-        </div>
+        </Link>
         <Button variant="ghost" size="sm" onClick={onSwitchPatient}>
           No soy {patient.name.split(" ")[0]}
         </Button>

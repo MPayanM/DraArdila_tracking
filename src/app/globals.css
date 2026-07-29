@@ -9,11 +9,13 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-nunito);
   --font-heading: var(--font-poppins);
+  --font-display: var(--font-fraunces);
   --color-brand-purple-dark: var(--brand-purple-dark);
   --color-brand-purple: var(--brand-purple);
   --color-brand-magenta: var(--brand-magenta);
   --color-brand-magenta-soft: var(--brand-magenta-soft);
   --color-brand-lavender: var(--brand-lavender);
+  --color-brand-gold: var(--brand-gold);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-success: var(--success);
@@ -66,6 +68,7 @@
   --ink-soft: #7a6f92;
   --success: #3fae7a;
   --warning: #e8a23c;
+  --brand-gold: #c99b3f;
 
   --background: #f4f0fa;
   --foreground: var(--ink);
@@ -111,6 +114,7 @@
   --ink-soft: #b3a6cf;
   --success: #4fcf94;
   --warning: #f0b45c;
+  --brand-gold: #e0b869;
 
   --background: #1a1330;
   --foreground: var(--ink);
@@ -162,4 +166,117 @@
 
 .brand-gradient {
   background: linear-gradient(120deg, var(--brand-magenta), var(--brand-purple));
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--brand-magenta) 0%,
+    var(--brand-purple) 55%,
+    var(--brand-purple-dark) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Aurora background: slow-moving blurred blobs in brand hues, used behind
+   hero sections. Kept off the critical path — only mounted where needed. */
+.aurora-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.aurora-bg::before,
+.aurora-bg::after,
+.aurora-blob {
+  content: "";
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.aurora-bg::before {
+  width: 55vw;
+  height: 55vw;
+  max-width: 640px;
+  max-height: 640px;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle, var(--brand-magenta), transparent 70%);
+  animation: aurora-drift-a 22s ease-in-out infinite alternate;
+}
+
+.aurora-bg::after {
+  width: 50vw;
+  height: 50vw;
+  max-width: 560px;
+  max-height: 560px;
+  bottom: -20%;
+  right: -10%;
+  background: radial-gradient(circle, var(--brand-purple), transparent 70%);
+  animation: aurora-drift-b 26s ease-in-out infinite alternate;
+}
+
+.aurora-blob {
+  width: 38vw;
+  height: 38vw;
+  max-width: 420px;
+  max-height: 420px;
+  top: 30%;
+  left: 38%;
+  background: radial-gradient(circle, var(--brand-gold), transparent 70%);
+  opacity: 0.35;
+  animation: aurora-drift-c 30s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift-a {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(8%, 10%) scale(1.15);
+  }
+}
+
+@keyframes aurora-drift-b {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-10%, -8%) scale(1.1);
+  }
+}
+
+@keyframes aurora-drift-c {
+  from {
+    transform: translate(-5%, -5%) scale(0.95);
+  }
+  to {
+    transform: translate(6%, 8%) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-bg::before,
+  .aurora-bg::after,
+  .aurora-blob {
+    animation: none;
+  }
+}
+
+.glass-panel {
+  background: color-mix(in oklab, var(--card) 90%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 45px -20px color-mix(in oklab, var(--brand-purple) 35%, transparent);
 }

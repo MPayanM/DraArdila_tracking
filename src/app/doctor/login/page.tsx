@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -35,8 +37,15 @@ export default function DoctorLoginPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-4 py-10">
-      <div className="mb-6 flex flex-col items-center gap-3 text-center">
+    <div className="relative isolate flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-10">
+      <div className="aurora-bg opacity-60" aria-hidden />
+
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 mb-6 flex flex-col items-center gap-3 text-center"
+      >
         <Image
           src="/fono.webp"
           alt="Logo Dra. Sandra Ardila"
@@ -46,52 +55,66 @@ export default function DoctorLoginPage() {
           priority
         />
         <div>
-          <h1 className="text-xl font-bold text-brand-purple-dark">
+          <h1 className="font-display text-2xl font-medium text-ink">
             Panel de la doctora
           </h1>
           <p className="text-sm text-ink-soft">Acceso exclusivo para Dra. Sandra Ardila</p>
         </div>
-      </div>
+      </motion.div>
 
-      <Card className="w-full max-w-sm border-border">
-        <CardHeader>
-          <p className="text-sm font-semibold text-brand-purple-dark">
-            Inicia sesión
-          </p>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="email">Correo</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoFocus
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="password">Contraseña</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="brand-gradient text-white hover:opacity-90"
-            >
-              {loading ? "Ingresando..." : "Ingresar"}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-sm"
+      >
+        <Card className="border-border glass-panel">
+          <CardHeader>
+            <p className="text-sm font-semibold text-brand-purple-dark">
+              Inicia sesión
+            </p>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="email">Correo</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoFocus
+                  required
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="password">Contraseña</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="brand-gradient text-white hover:opacity-90"
+              >
+                {loading ? "Ingresando..." : "Ingresar"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      <Link
+        href="/"
+        className="relative z-10 mt-6 text-xs text-ink-soft underline-offset-2 hover:underline"
+      >
+        ← Volver al inicio
+      </Link>
     </div>
   );
 }
