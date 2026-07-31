@@ -116,7 +116,7 @@ Two brand hues (deep violet, warm magenta) carry almost all color meaning; every
 
 **The One Field Rule.** Exactly one interactive background — the depth field — exists across the whole app, mounted once at the root layout. No page mounts its own decorative background, blob, or secondary 3D element.
 
-**The Clear Column Rule.** Blobs are excluded from a center column at every depth, sized as a fraction of that depth's own on-screen half-width (perspective-correct, not a flat world-space offset) — so a near blob and a far blob are both kept equally clear of the centered reading column regardless of how much closer the near one is to the camera.
+**The Clear Column Rule.** Blobs are excluded from a center column at every depth, sized as a fraction of that depth's own on-screen half-width (perspective-correct, not a flat world-space offset) — so a near blob and a far blob are both kept equally clear of the centered reading column regardless of how much closer the near one is to the camera. That excluded fraction itself scales with viewport width (~55% on desktop, up to ~92% on phones), because the readable column is a small slice of a desktop screen but consumes nearly the entire width on mobile — a fraction tuned for desktop left almost no protected margin once the same column became the whole viewport.
 
 ## Typography
 

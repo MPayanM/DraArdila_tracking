@@ -11,13 +11,16 @@ import { useReducedMotion } from "@/hooks/use-reduced-motion";
 // heading or paragraph can wash the text out instead of reading as background.
 const SHARD_COLORS = ["#5b3c8e", "#c3287d", "#c99b3f", "#b9aee8"];
 
-// Fraction of the on-screen half-width, AT EACH SHARD'S OWN DEPTH, reserved as
-// a blob-free column down the center of the viewport. Computed per-depth
-// (not as a flat world-space offset) because perspective means a near object
-// covers far more screen width per world-unit than a far one — a fixed
-// world-space gap left near blobs sitting squarely behind the centered
-// reading column while barely affecting far ones.
-const CENTER_SAFE_FRACTION = 0.55;
+// The readable column (max-w-3xl, ~768px, minus page padding) stays a small
+// fraction of the viewport on desktop but swallows nearly the entire width
+// on a phone — a fixed exclusion fraction that looked right on desktop left
+// almost no protected margin on mobile, where the column IS the viewport.
+// So the excluded fraction is computed per-viewport-width, not hardcoded.
+function centerSafeFraction(viewportWidthPx: number): number {
+  const columnWidthPx = Math.min(viewportWidthPx - 32, 768);
+  const raw = columnWidthPx / viewportWidthPx + 0.1;
+  return Math.min(0.92, Math.max(0.55, raw));
+}
 
 type ShardConfig = {
   position: [number, number, number];
@@ -45,8 +48,10 @@ function makeShards(
   fovDeg: number
 ): ShardConfig[] {
   const [near, far] = depthRange;
+  const viewportWidthPx = typeof window === "undefined" ? 1440 : window.innerWidth;
   const aspect = typeof window === "undefined" ? 16 / 9 : window.innerWidth / window.innerHeight;
   const tanHalfV = Math.tan((fovDeg * Math.PI) / 180 / 2);
+  const safeFraction = centerSafeFraction(viewportWidthPx);
 
   return Array.from({ length: count }, (_, i) => {
     const z = far + Math.random() * (near - far);
@@ -57,7 +62,7 @@ function makeShards(
     // fraction regardless of how close or far the shard is.
     const distance = cameraZ - z;
     const halfScreenWidth = distance * tanHalfV * aspect;
-    const safeHalfWidth = halfScreenWidth * CENTER_SAFE_FRACTION;
+    const safeHalfWidth = halfScreenWidth * safeFraction;
 
     const side = Math.random() < 0.5 ? -1 : 1;
     const x = side * (safeHalfWidth + Math.random() * (halfScreenWidth - safeHalfWidth));
