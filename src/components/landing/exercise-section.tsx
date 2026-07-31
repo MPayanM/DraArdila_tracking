@@ -20,7 +20,7 @@ export function ExerciseSection() {
         {MOMENTS.map((m, i) => (
           <Reveal key={m.id} delay={i * 0.06}>
             <div className="flex h-full flex-col items-center gap-2 rounded-2xl border border-border bg-card px-3 py-6 text-center shadow-sm">
-              <span className="text-3xl">{m.icon}</span>
+              <m.icon className="h-8 w-8 text-brand-purple" strokeWidth={1.75} aria-hidden />
               <span className="font-heading text-sm font-semibold text-brand-purple-dark">
                 {m.label}
               </span>

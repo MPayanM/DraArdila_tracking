@@ -8,7 +8,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-1 flex-col bg-background">
+    <div className="flex flex-1 flex-col">
       <LandingNav />
       <main className="flex-1">
         <Hero />

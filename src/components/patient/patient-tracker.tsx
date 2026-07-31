@@ -137,10 +137,6 @@ export function PatientTracker({
 
   return (
     <div className="relative isolate flex-1 overflow-hidden">
-      <div className="aurora-bg opacity-50" aria-hidden>
-        <span className="aurora-blob" />
-      </div>
-
       <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8">
         <motion.header
           initial={{ opacity: 0, y: -10 }}
@@ -218,9 +214,9 @@ export function PatientTracker({
                           />
                           <Label
                             htmlFor={`moment-${m.id}`}
-                            className="font-heading font-semibold"
+                            className="inline-flex items-center gap-1.5 font-heading font-semibold"
                           >
-                            <span className="mr-1">{m.icon}</span>
+                            <m.icon className="h-4 w-4 text-brand-purple" strokeWidth={1.75} aria-hidden />
                             {m.label}
                           </Label>
                         </div>

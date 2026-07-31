@@ -1,3 +1,5 @@
+import { Sunrise, Apple, Utensils, Sandwich, Moon, type LucideIcon } from "lucide-react";
+
 export type Moment =
   | "desayuno"
   | "media_manana"
@@ -5,12 +7,12 @@ export type Moment =
   | "media_tarde"
   | "cena";
 
-export const MOMENTS: { id: Moment; label: string; icon: string }[] = [
-  { id: "desayuno", label: "Desayuno", icon: "🌅" },
-  { id: "media_manana", label: "Medias nueves", icon: "🍎" },
-  { id: "almuerzo", label: "Almuerzo", icon: "🍽️" },
-  { id: "media_tarde", label: "Media tarde", icon: "🥪" },
-  { id: "cena", label: "Cena", icon: "🌙" },
+export const MOMENTS: { id: Moment; label: string; icon: LucideIcon }[] = [
+  { id: "desayuno", label: "Desayuno", icon: Sunrise },
+  { id: "media_manana", label: "Medias nueves", icon: Apple },
+  { id: "almuerzo", label: "Almuerzo", icon: Utensils },
+  { id: "media_tarde", label: "Media tarde", icon: Sandwich },
+  { id: "cena", label: "Cena", icon: Moon },
 ];
 
 export function momentLabel(moment: Moment): string {

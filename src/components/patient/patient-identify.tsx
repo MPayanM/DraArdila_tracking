@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { HeroOrbCanvas } from "@/components/three/hero-orb-canvas";
 import { BrandIcon } from "@/components/brand-mark";
 
 export function PatientIdentify({
@@ -33,17 +32,6 @@ export function PatientIdentify({
 
   return (
     <div className="relative isolate flex flex-1 flex-col items-center justify-center overflow-hidden px-4 py-14">
-      <div className="aurora-bg opacity-80" aria-hidden>
-        <span className="aurora-blob" />
-      </div>
-
-      <div
-        className="pointer-events-none absolute -right-24 -top-16 z-0 h-[26rem] w-[26rem] opacity-40 blur-[2px] sm:opacity-55 lg:-right-10"
-        aria-hidden
-      >
-        <HeroOrbCanvas className="h-full w-full" />
-      </div>
-
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

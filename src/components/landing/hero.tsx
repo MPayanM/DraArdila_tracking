@@ -1,27 +1,15 @@
 "use client";
 
-import { useRef } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { LogoBadgeCanvas } from "@/components/three/logo-badge-canvas";
 
 export function Hero() {
   const reduce = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const auroraY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 120]);
 
   return (
-    <section ref={sectionRef} className="relative isolate overflow-hidden">
-      <motion.div className="aurora-bg" style={{ y: auroraY }} aria-hidden>
-        <span className="aurora-blob" />
-      </motion.div>
-
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:gap-6 lg:py-28">
+    <section className="relative isolate overflow-hidden">
+      <div className="relative z-10 mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 sm:py-28">
         <motion.div
           initial={{ opacity: 0, y: reduce ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,18 +24,18 @@ export function Hero() {
             <span className="text-gradient italic">sin tener que preguntar.</span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
             Una herramienta pensada para el consultorio: prescribes el
             ejercicio de masticación y deglución para cada paciente y
             consultas su cumplimiento cuando quieras, sin planillas ni
             llamadas de seguimiento.
           </p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
             <Button
               size="lg"
-              className="brand-gradient h-12 px-6 text-base text-white hover:opacity-90"
-              render={<Link href="/doctor/login">Acceso para profesionales</Link>}
+              className="bg-brand-purple h-12 px-6 text-base text-white hover:bg-brand-purple/85"
+              render={<Link href="/doctor/login">Acceso profesional</Link>}
             />
             <Button
               size="lg"
@@ -61,15 +49,6 @@ export function Hero() {
             Desarrollada junto con la Dra. Sandra Ardila, a partir de un
             protocolo que ya usa con sus pacientes.
           </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: reduce ? 1 : 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="relative mx-auto aspect-square w-full max-w-xl lg:max-w-2xl"
-        >
-          <LogoBadgeCanvas className="h-full w-full" />
         </motion.div>
       </div>
     </section>

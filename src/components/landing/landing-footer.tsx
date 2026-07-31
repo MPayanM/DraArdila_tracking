@@ -5,7 +5,7 @@ export function LandingFooter() {
   return (
     <footer className="border-t border-border py-12">
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 px-4 text-center sm:px-6">
-        <BrandMark size={56} textClassName="text-xl" tagline />
+        <BrandMark size={56} textClassName="text-xl" />
         <p className="max-w-md text-xs leading-relaxed text-ink-soft">
           Los datos de salud registrados aquí se manejan conforme a la Ley
           1581 de 2012 (protección de datos personales, Colombia).

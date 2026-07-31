@@ -376,8 +376,11 @@ export default function DoctorDashboard() {
                               )
                             }
                           />
-                          <Label htmlFor={`new-req-${m.id}`} className="font-normal">
-                            <span className="mr-1">{m.icon}</span>
+                          <Label
+                            htmlFor={`new-req-${m.id}`}
+                            className="inline-flex items-center gap-1.5 font-normal"
+                          >
+                            <m.icon className="h-4 w-4 text-brand-purple" strokeWidth={1.75} aria-hidden />
                             {m.label}
                           </Label>
                         </div>

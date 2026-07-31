@@ -1,28 +1,22 @@
 import type { Metadata } from "next";
-import { Nunito, Sora, Fraunces } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { PageTransition } from "@/components/page-transition";
 import { RouteProgress } from "@/components/route-progress";
+import { DepthFieldRoot } from "@/components/three/depth-field-root";
 import "./globals.css";
 
-const nunito = Nunito({
-  variable: "--font-nunito",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const sora = Sora({
-  variable: "--font-sora",
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-});
-
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  subsets: ["latin"],
-  weight: "variable",
+  weight: "400",
   style: ["normal", "italic"],
-  axes: ["SOFT", "opsz"],
 });
 
 export const metadata: Metadata = {
@@ -39,9 +33,10 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${nunito.variable} ${sora.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${inter.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <DepthFieldRoot />
         <RouteProgress />
         <PageTransition>{children}</PageTransition>
         <Toaster position="top-center" />

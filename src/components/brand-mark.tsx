@@ -91,25 +91,16 @@ function Wordmark({ className }: { className?: string }) {
 export function BrandMark({
   size = 40,
   textClassName,
-  tagline,
   className,
 }: {
   size?: number;
   textClassName?: string;
-  tagline?: boolean;
   className?: string;
 }) {
   return (
     <span className={cn("inline-flex items-center gap-3", className)}>
       <BrandIcon size={size} />
-      <span className="flex flex-col leading-tight">
-        <Wordmark className={textClassName} />
-        {tagline && (
-          <span className="text-xs font-medium text-brand-magenta-soft">
-            Centro de audición y equilibrio
-          </span>
-        )}
-      </span>
+      <Wordmark className={textClassName} />
     </span>
   );
 }

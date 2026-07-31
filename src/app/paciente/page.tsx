@@ -46,7 +46,7 @@ export default function PacientePage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col bg-background">
+    <div className="flex flex-1 flex-col">
       <AnimatePresence mode="wait" initial={false}>
         {patient ? (
           <motion.div

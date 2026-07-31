@@ -19,7 +19,7 @@ export function LandingNav() {
           />
           <Button
             size="sm"
-            className="brand-gradient text-white hover:opacity-90"
+            className="bg-brand-purple text-white hover:bg-brand-purple/85"
             render={<Link href="/doctor/login">Acceso profesional</Link>}
           />
         </nav>

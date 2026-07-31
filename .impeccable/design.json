@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-31T00:00:00.000Z",
+  "title": "Design System: Dra. Sandra Ardila — Ejercicios de Masticación y Deglución",
+  "extensions": {
+    "colorMeta": {
+      "brand-purple": {
+        "role": "primary",
+        "displayName": "Brand Purple",
+        "canonical": "#5b3c8e",
+        "tonalRamp": ["#180f2a", "#2a1c4a", "#3c2a72", "#4c3486", "#5b3c8e", "#8168ab", "#a98fe0", "#d9c9f7"]
+      },
+      "brand-purple-dark": {
+        "role": "primary",
+        "displayName": "Brand Purple Dark",
+        "canonical": "#3c2a72",
+        "tonalRamp": ["#0f0a1c", "#1e1438", "#2c1f56", "#3c2a72", "#4e3990", "#6e56b3", "#9782d2", "#d9c9f7"]
+      },
+      "brand-magenta": {
+        "role": "secondary",
+        "displayName": "Brand Magenta",
+        "canonical": "#c3287d",
+        "tonalRamp": ["#2e0a1c", "#4d1230", "#711a47", "#9c215f", "#c3287d", "#d451a0", "#e07fbd", "#ec7bb5"]
+      },
+      "brand-magenta-soft": {
+        "role": "secondary",
+        "displayName": "Brand Magenta Soft",
+        "canonical": "#e8a8c8",
+        "tonalRamp": ["#4d1230", "#711a47", "#9c215f", "#c3287d", "#d878a7", "#e8a8c8", "#f0c4da", "#f8e3ec"]
+      },
+      "brand-periwinkle": {
+        "role": "tertiary",
+        "displayName": "Brand Periwinkle",
+        "canonical": "#b9aee8",
+        "tonalRamp": ["#241a3d", "#3a2d5c", "#584a80", "#7d6dab", "#b9aee8", "#cbc3ee", "#ddd7f4", "#eeebf9"]
+      },
+      "brand-gold": {
+        "role": "tertiary",
+        "displayName": "Brand Gold",
+        "canonical": "#c99b3f",
+        "tonalRamp": ["#3d2e0f", "#5c4517", "#7d5d1f", "#a17a2c", "#c99b3f", "#dab868", "#e8d095", "#f4e8c8"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#2e2440",
+        "tonalRamp": ["#120e1c", "#1e1830", "#2e2440", "#453a5c", "#6f6389", "#a89ec1", "#d0c9e3", "#f1ecfa"]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Ink Soft",
+        "canonical": "#6f6389",
+        "tonalRamp": ["#2e2440", "#453a5c", "#6f6389", "#8c81a3", "#a89ec1", "#cfc6e0", "#e4dcf2", "#f4f0fa"]
+      },
+      "brand-lavender": {
+        "role": "neutral",
+        "displayName": "Lavender",
+        "canonical": "#f4f0fa",
+        "tonalRamp": ["#241a3d", "#3a2d5c", "#584a80", "#a89ec1", "#cfc6e0", "#e4dcf2", "#f4f0fa", "#fbfaff"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border",
+        "canonical": "#e4dcf2",
+        "tonalRamp": ["#3a2d5c", "#584a80", "#7d6dab", "#a89ec1", "#cfc6e0", "#e4dcf2", "#efe9f7", "#fbfaff"]
+      },
+      "success": {
+        "role": "neutral",
+        "displayName": "Success",
+        "canonical": "#3fae7a",
+        "tonalRamp": ["#0f2e1e", "#164a30", "#1f6942", "#2c8a5a", "#3fae7a", "#6dc99b", "#9ddcbc", "#cdeeda"]
+      },
+      "warning": {
+        "role": "neutral",
+        "displayName": "Warning",
+        "canonical": "#e8a23c",
+        "tonalRamp": ["#3d2a0f", "#5c4017", "#7d571f", "#a1742c", "#e8a23c", "#eebb6d", "#f4d29c", "#faeacb"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Instrument Serif)", "purpose": "Hero headlines only; the emphasized clause is set in italic with the text-gradient." },
+      "heading": { "displayName": "Heading (Inter)", "purpose": "Section titles, card titles, nav-level headings — same family as body, different weight." },
+      "body": { "displayName": "Body (Inter)", "purpose": "Paragraph copy, table content, form labels, everyday UI text." }
+    },
+    "shadows": [
+      { "name": "glass-panel-ambient", "value": "0 20px 45px -20px color-mix(in oklab, var(--brand-purple) 35%, transparent)", "purpose": "Sticky nav glass panel only — the system's one shadow, never used for card/dropdown elevation." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Default entrance easing for hero/landing motion (Framer Motion)." },
+      { "name": "depth-field-drift", "value": "per-blob autonomous bobble + cursor parallax + scroll drift, all frozen under prefers-reduced-motion", "purpose": "The root-mounted interactive 3D background (src/components/three/depth-field.tsx)." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The system's single highest-emphasis action — flat brand-purple fill (no gradient), reserved for one per screen.",
+      "html": "<button class=\"ds-btn-primary\">Acceso profesional</button>",
+      "css": ".ds-btn-primary { background: #5b3c8e; color: #ffffff; height: 3rem; padding: 0 1.5rem; border-radius: 0.9rem; border: none; font-size: 1rem; font-weight: 500; font-family: Inter, ui-sans-serif, system-ui; cursor: pointer; transition: background 0.2s, transform 0.1s; } .ds-btn-primary:hover { background: #4c3486; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(195,40,125,0.5); } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Everyday secondary action — does most of the interface's work so the primary fill stays rare.",
+      "html": "<button class=\"ds-btn-outline\">Soy paciente</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #2e2440; height: 3rem; padding: 0 1.5rem; border-radius: 0.9rem; border: 1px solid #e4dcf2; font-size: 1rem; font-weight: 500; font-family: Inter, ui-sans-serif, system-ui; cursor: pointer; transition: background 0.2s, color 0.2s; } .ds-btn-outline:hover { background: #f1e9f9; } .ds-btn-outline:focus-visible { outline: none; border-color: #c3287d; box-shadow: 0 0 0 3px rgba(195,40,125,0.5); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Flat, ring-bordered container — depth comes from the border, never a shadow. Opaque so it stays readable over the depth field.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Cumplimiento semanal</div><div class=\"ds-card-body\">82% de los momentos prescritos registrados esta semana.</div></div>",
+      "css": ".ds-card { background: #ffffff; border-radius: 1.26rem; box-shadow: none; outline: 1px solid rgba(46,36,64,0.1); padding: 1rem; font-family: Inter, ui-sans-serif, system-ui; } .ds-card-title { font-family: Inter, ui-sans-serif, system-ui; font-weight: 600; font-size: 1rem; color: #2e2440; margin-bottom: 0.5rem; } .ds-card-body { font-size: 0.875rem; color: #6f6389; line-height: 1.6; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Transparent, ring-bordered field sharing the same focus language as buttons.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Alimento\" />",
+      "css": ".ds-input { height: 2rem; width: 100%; background: transparent; border: 1px solid #e4dcf2; border-radius: 0.9rem; padding: 0.25rem 0.625rem; font-size: 0.875rem; font-family: Inter, ui-sans-serif, system-ui; color: #2e2440; outline: none; transition: border-color 0.2s, box-shadow 0.2s; } .ds-input::placeholder { color: #6f6389; } .ds-input:focus-visible { border-color: #c3287d; box-shadow: 0 0 0 3px rgba(195,40,125,0.5); }"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge-default",
+      "description": "Fully-rounded status/label chip used for compliance state and 'new patient' markers.",
+      "html": "<span class=\"ds-badge\">Nuevo paciente</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; height: 1.25rem; padding: 0.125rem 0.5rem; border-radius: 9999px; background: #5b3c8e; color: #ffffff; font-size: 0.75rem; font-weight: 500; font-family: Inter, ui-sans-serif, system-ui; white-space: nowrap; }"
+    },
+    {
+      "name": "Sticky Nav (Glass Panel)",
+      "kind": "nav",
+      "refersTo": "nav-glass",
+      "description": "The system's one glass/shadow moment — translucent blurred bar carrying the brand mark (no tagline) and 1-2 flat/outline actions, never gradient.",
+      "html": "<header class=\"ds-nav\"><span class=\"ds-nav-brand\">sandr<span class=\"ds-nav-brand-accent\">a</span>rdila</span><button class=\"ds-btn-primary\" style=\"height:2rem;padding:0 1rem;font-size:0.875rem;\">Acceso profesional</button></header>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px) saturate(160%); border-bottom: 1px solid #e4dcf2; box-shadow: 0 20px 45px -20px rgba(91,60,142,0.35); } .ds-nav-brand { font-family: Inter, ui-sans-serif, system-ui; font-weight: 700; font-size: 1.125rem; color: #3c2a72; } .ds-nav-brand-accent { color: #c3287d; }"
+    },
+    {
+      "name": "Depth Field Blob",
+      "kind": "custom",
+      "refersTo": "depth-field",
+      "description": "One layer of the root-mounted interactive 3D background — a soft, semi-transparent, distorted sphere. Not a real DOM component (WebGL/react-three-fiber), approximated here as a radial-gradient blob for the panel's preview surface.",
+      "html": "<div class=\"ds-blob\"></div>",
+      "css": ".ds-blob { width: 140px; height: 140px; border-radius: 46% 54% 61% 39% / 45% 41% 59% 55%; background: radial-gradient(circle at 35% 30%, rgba(185,174,232,0.55), rgba(91,60,142,0.35) 70%); filter: blur(0.5px); opacity: 0.6; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Drifting Field",
+    "overview": "A clinical adherence tool that earns trust two ways at once: precise, uncluttered structure for the daily work of logging and reviewing an exercise, set against a living, interactive background of soft, organic, glass-like blobs drifting in brand purple/magenta/gold/periwinkle. The field is never a decoration parked in one corner — it spans the full viewport on every page, shifts with cursor and scroll, and reads as one continuous atmosphere rather than a UI widget. It is expressive (hero variant) on the landing page and deliberately subdued (ambient variant) everywhere data and forms need to lead. Working surfaces (cards, tables, forms) stay flat, ring-bordered, and fast to scan; the field supplies the warmth and motion so the UI chrome doesn't have to. Typography moved to a confident editorial pairing — Instrument Serif for display headlines, Inter for everything else — replacing the earlier Fraunces/Sora/Nunito trio.",
+    "keyCharacteristics": [
+      "The depth field is a background, not an ornament: full-bleed, interactive (pointer parallax + scroll drift), mounted once at the root and never duplicated per page.",
+      "Blobs are soft and organic (distorted, smooth-shaded spheres), not hard-faceted geometry — abstract atmosphere, not solid objects.",
+      "A perspective-correct empty column runs down the center of the viewport at every depth, so blobs never drift behind the centered reading column.",
+      "Two intensities only — hero (landing) and ambient (everywhere else) — no per-page bespoke tuning.",
+      "The brand gradient (.text-gradient) is reserved for exactly one emphasized headline clause; primary buttons use a flat brand-purple fill instead of a gradient.",
+      "All iconography is lucide-react line icons at a consistent stroke weight — no emoji anywhere in the product."
+    ],
+    "rules": [
+      { "name": "The Rare Gradient Rule", "body": ".text-gradient (purple→magenta) appears on at most one emphasized clause per screen — typically the hero headline's italic phrase. Buttons and other UI use a flat brand-purple fill instead of the gradient.", "section": "colors" },
+      { "name": "The One Field Rule", "body": "Exactly one interactive background — the depth field — exists across the whole app, mounted once at the root layout. No page mounts its own decorative background, blob, or secondary 3D element.", "section": "colors" },
+      { "name": "The Clear Column Rule", "body": "Blobs are excluded from a center column at every depth, sized as a fraction of that depth's own on-screen half-width (perspective-correct, not a flat world-space offset), so near and far blobs are equally kept clear of the centered reading column.", "section": "elevation" },
+      { "name": "The One-Phrase Italic Rule", "body": "Instrument Serif italic is reserved for a single emphasized clause per headline. It never sets a full sentence or paragraph.", "section": "typography" },
+      { "name": "The One-Grotesk Rule", "body": "Every non-display role (heading, body, label) renders the same family (Inter) at different weights. Don't introduce a second sans-serif for any UI role.", "section": "typography" },
+      { "name": "The Ring-Not-Shadow Rule", "body": "Structural surfaces (cards, inputs, tables) gain edges from a 1px ring/border, never a drop shadow. Reserve shadow for the one glass-panel moment.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the depth field to exactly two variants (hero, ambient) chosen by route — never hand-tune a third intensity for a specific page.",
+      "Do compute any blob-placement exclusion zone as a fraction of that blob's own on-screen size at its depth, never as a flat world-space offset.",
+      "Do avoid shard/blob colors close in luminance to --ink (e.g. brand-purple-dark) — a background element close to the text color's own darkness can wash text out.",
+      "Do reserve .text-gradient for one emphasized headline clause per screen; use flat brand-purple for every button, including primary CTAs.",
+      "Do keep page-root wrappers background-transparent so the depth field shows through; only --card and other explicit surfaces should be opaque.",
+      "Do use lucide-react for every icon need — never emoji, never a mix of icon systems on the same screen.",
+      "Do derive every corner radius from the single --radius root token rather than hardcoding a new pixel value.",
+      "Do build structural depth from a 1px ring/border and background contrast, never a drop shadow, outside the sticky nav."
+    ],
+    "donts": [
+      "Don't mount a per-page decorative background (blob, gradient, secondary 3D element) — the depth field is the only atmosphere layer.",
+      "Don't apply the brand gradient to a button fill; it's a headline-only treatment now.",
+      "Don't add a general shadow scale for card/dropdown elevation — that's a departure from the Ring-Not-Shadow Rule.",
+      "Don't introduce a second sans-serif for any heading/body/label role, or a second italic-emphasis pattern beyond the hero headline.",
+      "Don't fabricate testimonials, patient counts, clinical outcome claims, or specialty taglines on sales-facing surfaces — no real evidence exists yet."
+    ]
+  }
+}

@@ -21,6 +21,11 @@ build/
 # Vercel
 .vercel
 
+# Impeccable local tool state (design.json sidecar IS committed, this isn't)
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+.impeccable/live/
+
 # Misc
 .claude/
 .DS_Store
