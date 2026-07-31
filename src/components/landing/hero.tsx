@@ -4,7 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { HeroOrbCanvas } from "@/components/three/hero-orb-canvas";
+import { LogoBadgeCanvas } from "@/components/three/logo-badge-canvas";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -32,15 +32,15 @@ export function Hero() {
           </span>
 
           <h1 className="mt-5 font-display text-4xl leading-[1.08] font-medium text-ink sm:text-5xl lg:text-6xl">
-            La adherencia terapéutica,{" "}
-            <span className="text-gradient italic">por fin visible.</span>
+            Saber si el ejercicio se está cumpliendo,{" "}
+            <span className="text-gradient italic">sin tener que preguntar.</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
-            Una plataforma clínica para prescribir el ejercicio de masticación
-            y deglución y ver, en tiempo real, si cada paciente lo está
-            cumpliendo. Sin planillas, sin llamadas de seguimiento y sin
-            tener que adivinar.
+            Una herramienta pensada para el consultorio: prescribes el
+            ejercicio de masticación y deglución para cada paciente y
+            consultas su cumplimiento cuando quieras, sin planillas ni
+            llamadas de seguimiento.
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -58,8 +58,8 @@ export function Hero() {
           </div>
 
           <p className="mt-6 text-sm text-ink-soft">
-            Diseñado junto a la Dra. Sandra Ardila a partir de un protocolo
-            clínico en uso real con pacientes.
+            Desarrollada junto con la Dra. Sandra Ardila, a partir de un
+            protocolo que ya usa con sus pacientes.
           </p>
         </motion.div>
 
@@ -67,9 +67,9 @@ export function Hero() {
           initial={{ opacity: 0, scale: reduce ? 1 : 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="relative mx-auto aspect-square w-full max-w-2xl lg:max-w-none"
+          className="relative mx-auto aspect-square w-full max-w-xl lg:max-w-2xl"
         >
-          <HeroOrbCanvas className="h-full w-full" />
+          <LogoBadgeCanvas className="h-full w-full" />
         </motion.div>
       </div>
     </section>

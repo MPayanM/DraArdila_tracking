@@ -5,6 +5,15 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { Reveal } from "@/components/reveal";
 import { AnimatedNumber } from "@/components/animated-number";
 import { Button } from "@/components/ui/button";
@@ -22,7 +31,7 @@ import {
 } from "@/components/ui/table";
 import { MOMENTS, momentLabel, type Moment } from "@/lib/moments";
 import {
-  computeCompliance,
+  computeWeeklyCompliance,
   getEntries,
   getPatient,
   updatePatient,
@@ -30,6 +39,7 @@ import {
   type Patient,
 } from "@/lib/data";
 import { downloadCSV, entriesToCSV } from "@/lib/csv";
+import { exportPatientSummaryPDF } from "@/lib/pdf";
 
 export default function PatientDetailPage() {
   const params = useParams<{ id: string }>();
@@ -102,13 +112,26 @@ export default function PatientDetailPage() {
     downloadCSV(`${patient.name.replace(/\s+/g, "_")}.csv`, entriesToCSV(entries));
   }
 
-  const compliance7 = useMemo(
-    () => (patient ? computeCompliance(patient, entries, 7) : 0),
+  function handleExportPDF() {
+    if (!patient) return;
+    exportPatientSummaryPDF(patient, entries, weeklyReport.weeks, weeklyReport.cumulative);
+  }
+
+  const weeklyReport = useMemo(
+    () =>
+      patient
+        ? computeWeeklyCompliance(patient, entries)
+        : { weeks: [], cumulative: 0 },
     [patient, entries]
   );
-  const compliance30 = useMemo(
-    () => (patient ? computeCompliance(patient, entries, 30) : 0),
-    [patient, entries]
+
+  const chartData = useMemo(
+    () =>
+      weeklyReport.weeks.map((w) => ({
+        name: w.label.replace("Semana ", "S"),
+        cumplimiento: w.compliance,
+      })),
+    [weeklyReport]
   );
 
   if (loading || !patient) {
@@ -133,22 +156,53 @@ export default function PatientDetailPage() {
 
       <Reveal delay={0.06}>
         <Card className="glass-panel rounded-3xl">
-          <CardHeader>
-            <p className="font-display text-lg font-medium text-ink">Cumplimiento</p>
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
+            <p className="font-display text-lg font-medium text-ink">
+              Cumplimiento semanal
+            </p>
+            <div className="text-right">
+              <p className="text-xs text-ink-soft">Acumulado del tratamiento</p>
+              <p className="font-display text-2xl font-semibold text-brand-purple-dark">
+                <AnimatedNumber value={weeklyReport.cumulative} suffix="%" />
+              </p>
+            </div>
           </CardHeader>
-          <CardContent className="flex gap-8">
-            <div>
-              <p className="text-xs text-ink-soft">Últimos 7 días</p>
-              <p className="font-display text-2xl font-semibold text-brand-purple-dark">
-                <AnimatedNumber value={compliance7} suffix="%" />
+          <CardContent>
+            {chartData.length === 0 ? (
+              <p className="py-6 text-center text-sm text-ink-soft">
+                Aún no hay semanas para mostrar.
               </p>
-            </div>
-            <div>
-              <p className="text-xs text-ink-soft">Últimos 30 días</p>
-              <p className="font-display text-2xl font-semibold text-brand-purple-dark">
-                <AnimatedNumber value={compliance30} suffix="%" />
-              </p>
-            </div>
+            ) : (
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fontSize: 12, fill: "var(--ink-soft)" }}
+                      axisLine={{ stroke: "var(--border)" }}
+                      tickLine={false}
+                    />
+                    <YAxis
+                      domain={[0, 100]}
+                      tick={{ fontSize: 12, fill: "var(--ink-soft)" }}
+                      axisLine={false}
+                      tickLine={false}
+                      width={36}
+                    />
+                    <Tooltip
+                      formatter={(value) => [`${value}%`, "Cumplimiento"]}
+                      contentStyle={{
+                        borderRadius: 12,
+                        border: "1px solid var(--border)",
+                        fontSize: 13,
+                      }}
+                    />
+                    <Bar dataKey="cumplimiento" fill="var(--brand-magenta)" radius={[6, 6, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            )}
           </CardContent>
         </Card>
       </Reveal>
@@ -238,9 +292,14 @@ export default function PatientDetailPage() {
             <p className="font-display text-lg font-medium text-ink">
               Registro detallado
             </p>
-            <Button size="sm" variant="outline" onClick={handleExportCSV}>
-              Exportar CSV
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" variant="outline" onClick={handleExportCSV}>
+                Exportar CSV
+              </Button>
+              <Button size="sm" variant="outline" onClick={handleExportPDF}>
+                Exportar PDF
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             {entries.length === 0 && (

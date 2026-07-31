@@ -7,7 +7,7 @@ export type Moment =
 
 export const MOMENTS: { id: Moment; label: string; icon: string }[] = [
   { id: "desayuno", label: "Desayuno", icon: "🌅" },
-  { id: "media_manana", label: "Medias nueve", icon: "🍎" },
+  { id: "media_manana", label: "Medias nueves", icon: "🍎" },
   { id: "almuerzo", label: "Almuerzo", icon: "🍽️" },
   { id: "media_tarde", label: "Media tarde", icon: "🥪" },
   { id: "cena", label: "Cena", icon: "🌙" },

@@ -42,7 +42,9 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="relative isolate flex flex-1 flex-col overflow-hidden bg-background">
-      <div className="aurora-bg opacity-20" aria-hidden />
+      <div className="aurora-bg opacity-40" aria-hidden>
+        <span className="aurora-blob" />
+      </div>
       <header className="glass-panel relative z-10 border-b border-border/60">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5">
           <Link href="/doctor" className="flex items-center gap-3">

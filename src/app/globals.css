@@ -16,6 +16,7 @@
   --color-brand-magenta-soft: var(--brand-magenta-soft);
   --color-brand-lavender: var(--brand-lavender);
   --color-brand-gold: var(--brand-gold);
+  --color-brand-periwinkle: var(--brand-periwinkle);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-success: var(--success);
@@ -64,6 +65,7 @@
   --brand-magenta: #c3287d;
   --brand-magenta-soft: #e8a8c8;
   --brand-lavender: #f4f0fa;
+  --brand-periwinkle: #b9aee8;
   --ink: #2e2440;
   --ink-soft: #7a6f92;
   --success: #3fae7a;
@@ -115,6 +117,7 @@
   --success: #4fcf94;
   --warning: #f0b45c;
   --brand-gold: #e0b869;
+  --brand-periwinkle: #8a7bc4;
 
   --background: #1a1330;
   --foreground: var(--ink);

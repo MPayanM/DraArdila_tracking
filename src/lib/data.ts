@@ -167,6 +167,7 @@ export async function addPatientManual(input: {
   name: string;
   phone?: string;
   email?: string;
+  requiredMoments: Moment[];
 }): Promise<Patient> {
   const { data, error } = await supabase
     .from("patients")
@@ -174,7 +175,7 @@ export async function addPatientManual(input: {
       name: input.name.trim(),
       phone: input.phone?.trim() || null,
       email: input.email?.trim() || null,
-      required_moments: MOMENTS.map((m) => m.id),
+      required_moments: input.requiredMoments,
     })
     .select("*")
     .single();
@@ -231,6 +232,86 @@ export function computeCompliance(
 
   if (totalRequired === 0) return 0;
   return Math.min(100, Math.round((totalDone / totalRequired) * 100));
+}
+
+export type WeekCompliance = {
+  label: string;
+  startDate: string;
+  endDate: string;
+  compliance: number;
+};
+
+export type ComplianceReport = {
+  weeks: WeekCompliance[];
+  cumulative: number;
+};
+
+// Buckets entries into 7-day weeks starting from the patient's createdAt
+// date, using the same required-vs-done counting as computeCompliance, plus
+// a cumulative figure across the whole range.
+export function computeWeeklyCompliance(
+  patient: Patient,
+  entries: Entry[]
+): ComplianceReport {
+  const required = patient.requiredMoments;
+  if (required.length === 0) {
+    return { weeks: [], cumulative: 0 };
+  }
+
+  const start = new Date(patient.createdAt);
+  start.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const totalDays =
+    Math.floor((today.getTime() - start.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+  const weekCount = Math.max(1, Math.ceil(totalDays / 7));
+
+  const weeks: WeekCompliance[] = [];
+  let cumulativeRequired = 0;
+  let cumulativeDone = 0;
+
+  for (let w = 0; w < weekCount; w++) {
+    const weekStart = new Date(start);
+    weekStart.setDate(weekStart.getDate() + w * 7);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+    const clampedEnd = weekEnd > today ? today : weekEnd;
+
+    let weekRequired = 0;
+    let weekDone = 0;
+
+    for (
+      let d = new Date(weekStart);
+      d <= clampedEnd;
+      d.setDate(d.getDate() + 1)
+    ) {
+      const iso = toLocalISODate(d);
+      const doneMoments = new Set(
+        entries.filter((e) => e.date === iso).map((e) => e.moment)
+      );
+      weekRequired += required.length;
+      weekDone += required.filter((m) => doneMoments.has(m)).length;
+    }
+
+    cumulativeRequired += weekRequired;
+    cumulativeDone += weekDone;
+
+    weeks.push({
+      label: `Semana ${w + 1}`,
+      startDate: toLocalISODate(weekStart),
+      endDate: toLocalISODate(clampedEnd),
+      compliance:
+        weekRequired === 0 ? 0 : Math.min(100, Math.round((weekDone / weekRequired) * 100)),
+    });
+  }
+
+  const cumulative =
+    cumulativeRequired === 0
+      ? 0
+      : Math.min(100, Math.round((cumulativeDone / cumulativeRequired) * 100));
+
+  return { weeks, cumulative };
 }
 
 // Which patient is "remembered" on this device — not sensitive, just a

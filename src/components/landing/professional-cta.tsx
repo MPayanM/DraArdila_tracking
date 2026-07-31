@@ -14,8 +14,9 @@ export function ProfessionalCta() {
             ¿Eres fonoaudióloga o fonoaudiólogo?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/75">
-            Esta plataforma nació de un consultorio real. Si te gustaría
-            ofrecerla a tus propios pacientes, hablemos.
+            Esta plataforma nació en un consultorio real, resolviendo un
+            problema real. Si quieres ofrecerla a tus propios pacientes,
+            conversemos.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button

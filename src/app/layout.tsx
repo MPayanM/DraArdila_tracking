@@ -29,9 +29,6 @@ export const metadata: Metadata = {
   title: "Ejercicios de Masticación y Deglución | Dra. Sandra Ardila",
   description:
     "Registro y seguimiento del ejercicio de masticación y deglución prescrito por la Dra. Sandra Ardila, fonoaudióloga.",
-  icons: {
-    icon: "/fono.webp",
-  },
 };
 
 export default function RootLayout({

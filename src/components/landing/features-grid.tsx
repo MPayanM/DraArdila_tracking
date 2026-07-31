@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BarChart3,
   BellRing,
   CalendarClock,
   Download,
@@ -26,15 +27,15 @@ const FEATURES = [
   },
   {
     icon: BellRing,
-    title: "Pacientes nuevos, al instante",
+    title: "Pacientes nuevos, de un vistazo",
     description:
-      "Un panel simple muestra quién se unió en los últimos 7 días, sin tener que revisar la lista completa.",
+      "Un panel simple muestra quién se unió en los últimos 7 días, sin tener que revisar toda la lista.",
   },
   {
     icon: Download,
     title: "Exportación a CSV",
     description:
-      "El detalle completo de fecha, momento y alimento, listo para llevar a la historia clínica.",
+      "El detalle completo de fecha, momento y alimento, listo para anexar a la historia clínica.",
   },
   {
     icon: Smartphone,
@@ -48,6 +49,12 @@ const FEATURES = [
     description:
       "El panel clínico requiere inicio de sesión; el paciente solo necesita su nombre.",
   },
+  {
+    icon: BarChart3,
+    title: "Reporte semanal y acumulado",
+    description:
+      "El cumplimiento se organiza por semana y muestra el acumulado del tratamiento, para ver el avance real y no solo una foto de los últimos días.",
+  },
 ];
 
 export function FeaturesGrid() {
@@ -55,7 +62,7 @@ export function FeaturesGrid() {
     <section className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
       <Reveal className="mx-auto max-w-xl text-center">
         <h2 className="font-display text-3xl font-medium text-ink sm:text-4xl">
-          Hecho para el consultorio, no para el laboratorio
+          Pensado para el día a día del consultorio
         </h2>
         <p className="mt-4 text-lg text-ink-soft">
           Cada detalle resuelve un problema real de seguimiento clínico.

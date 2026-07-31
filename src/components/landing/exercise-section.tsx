@@ -6,13 +6,13 @@ export function ExerciseSection() {
     <section className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
       <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="font-display text-3xl font-medium text-ink sm:text-4xl">
-          El ejercicio, explicado en una frase
+          El ejercicio, en pocas palabras
         </h2>
         <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-          En cada comida, el paciente mastica y traga con un pequeño trozo de
-          caucho en la punta de la lengua. Así se entrena que la lengua
-          descanse en el paladar y que, al tragar, los dientes cierren y la
-          lengua se mantenga arriba.
+          En cada comida, el paciente coloca un pequeño trozo de caucho en la
+          punta de la lengua y traga así. Con la repetición, la lengua
+          aprende a descansar contra el paladar y, al tragar, los dientes se
+          cierran mientras la lengua se mantiene arriba.
         </p>
       </Reveal>
 
@@ -30,8 +30,8 @@ export function ExerciseSection() {
       </div>
 
       <Reveal delay={0.2} className="mt-6 text-center text-sm text-ink-soft">
-        La doctora decide cuáles de estos 5 momentos aplican para cada
-        paciente, y el cumplimiento se calcula solo contra lo prescrito.
+        La doctora define, paciente por paciente, cuáles de estos momentos
+        aplican — el cumplimiento se mide solo contra lo que ella prescribió.
       </Reveal>
     </section>
   );

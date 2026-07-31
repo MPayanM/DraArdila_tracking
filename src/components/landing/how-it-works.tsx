@@ -9,19 +9,19 @@ const STEPS = [
     icon: UserRound,
     title: "La doctora prescribe",
     description:
-      "Agrega al paciente y define qué momentos del día debe cumplir, porque no todos necesitan los 5.",
+      "Agrega al paciente y define, desde el primer momento, qué comidas debe cumplir — no todos necesitan las 5.",
   },
   {
     icon: ClipboardCheck,
     title: "El paciente registra",
     description:
-      "Sin contraseña: escribe su nombre y marca cada comida con el alimento, incluso días pasados.",
+      "Sin contraseña: escribe su nombre y registra cada comida con el alimento, incluso si fue un día anterior.",
   },
   {
     icon: LineChart,
-    title: "El cumplimiento se ve solo",
+    title: "La doctora hace seguimiento",
     description:
-      "La doctora revisa el % de adherencia a 7 y 30 días de cada paciente, sin pedir el dato.",
+      "La doctora revisa el cumplimiento semana a semana y el acumulado del tratamiento, sin tener que pedir el dato.",
   },
 ];
 
@@ -31,7 +31,7 @@ export function HowItWorks() {
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <Reveal className="mx-auto max-w-xl text-center">
           <h2 className="font-display text-3xl font-medium text-ink sm:text-4xl">
-            Tres pasos, cero fricción
+            Cómo funciona
           </h2>
         </Reveal>
 
