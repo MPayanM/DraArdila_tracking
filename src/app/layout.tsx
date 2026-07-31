@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito, Poppins, Fraunces } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { PageTransition } from "@/components/page-transition";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -43,7 +44,7 @@ export default function RootLayout({
       className={`${nunito.variable} ${poppins.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
+        <PageTransition>{children}</PageTransition>
         <Toaster position="top-center" />
       </body>
     </html>

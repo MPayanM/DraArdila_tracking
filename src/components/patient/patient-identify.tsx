@@ -53,8 +53,8 @@ export function PatientIdentify({
         <Image
           src="/fono.webp"
           alt="Logo Dra. Sandra Ardila"
-          width={128}
-          height={128}
+          width={168}
+          height={168}
           className="rounded-3xl shadow-lg ring-1 ring-border/60"
           priority
         />

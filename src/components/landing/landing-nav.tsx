@@ -12,12 +12,12 @@ export function LandingNav() {
           <Image
             src="/fono.webp"
             alt="Logo Dra. Sandra Ardila"
-            width={52}
-            height={52}
+            width={68}
+            height={68}
             className="rounded-xl shadow-sm"
             priority
           />
-          <span className="font-heading text-base font-bold text-brand-purple-dark">
+          <span className="font-heading text-lg font-bold text-brand-purple-dark">
             Sandra Ardila
           </span>
         </Link>

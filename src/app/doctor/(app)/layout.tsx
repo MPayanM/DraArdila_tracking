@@ -1,15 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 
 export default function DoctorAppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const reduce = useReducedMotion();
   const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
@@ -23,6 +26,10 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
     });
     return () => sub.subscription.unsubscribe();
   }, [router]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   async function handleLogout() {
     await supabase.auth.signOut();
@@ -42,11 +49,11 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
             <Image
               src="/fono.webp"
               alt="Logo Dra. Sandra Ardila"
-              width={52}
-              height={52}
+              width={68}
+              height={68}
               className="rounded-xl shadow-sm"
             />
-            <span className="font-heading text-base font-bold text-brand-purple-dark">
+            <span className="font-heading text-lg font-bold text-brand-purple-dark">
               Panel de la doctora
             </span>
           </Link>
@@ -56,7 +63,17 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
         </div>
       </header>
       <main className="relative z-10 mx-auto w-full max-w-4xl flex-1 px-4 py-8">
-        {children}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: reduce ? 0 : 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reduce ? 0 : -6 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
     </div>
   );
