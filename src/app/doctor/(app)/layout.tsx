@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
+import { BrandIcon } from "@/components/brand-mark";
 
 export default function DoctorAppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -44,15 +44,9 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
     <div className="relative isolate flex flex-1 flex-col overflow-hidden bg-background">
       <div className="aurora-bg opacity-20" aria-hidden />
       <header className="glass-panel relative z-10 border-b border-border/60">
-        <div className="mx-auto flex w-full max-w-4xl items-center justify-between px-4 py-2.5">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5">
           <Link href="/doctor" className="flex items-center gap-3">
-            <Image
-              src="/fono.webp"
-              alt="Logo Dra. Sandra Ardila"
-              width={68}
-              height={68}
-              className="rounded-xl shadow-sm"
-            />
+            <BrandIcon size={44} />
             <span className="font-heading text-lg font-bold text-brand-purple-dark">
               Panel de la doctora
             </span>
@@ -62,7 +56,7 @@ export default function DoctorAppLayout({ children }: { children: React.ReactNod
           </Button>
         </div>
       </header>
-      <main className="relative z-10 mx-auto w-full max-w-4xl flex-1 px-4 py-8">
+      <main className="relative z-10 mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={pathname}

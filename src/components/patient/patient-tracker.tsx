@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import { useEffect, useId, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { toast } from "sonner";
@@ -14,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Reveal } from "@/components/reveal";
 import { AnimatedNumber } from "@/components/animated-number";
+import { BrandIcon } from "@/components/brand-mark";
 import { MOMENTS, momentLabel, todayISO, type Moment } from "@/lib/moments";
 import {
   addEntry,
@@ -133,11 +133,13 @@ export function PatientTracker({
     [entries]
   );
 
+  const doneToday = MOMENTS.filter((m) => drafts[m.id].done).length;
+
   return (
     <div className="relative isolate flex-1 overflow-hidden">
       <div className="aurora-bg opacity-30" aria-hidden />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8">
         <motion.header
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -145,13 +147,7 @@ export function PatientTracker({
           className="flex items-center justify-between gap-3"
         >
           <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/fono.webp"
-              alt="Logo Dra. Sandra Ardila"
-              width={84}
-              height={84}
-              className="rounded-2xl shadow-md"
-            />
+            <BrandIcon size={56} className="drop-shadow-md" />
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
                 Hola,
@@ -166,161 +162,214 @@ export function PatientTracker({
           </Button>
         </motion.header>
 
-        <Reveal delay={0.05}>
-          <Card className="glass-panel rounded-3xl">
-            <CardHeader className="flex flex-row items-center justify-between gap-3">
-              <p className="font-display text-lg font-medium text-ink">
-                Tu cumplimiento
-              </p>
-            </CardHeader>
-            <CardContent className="flex gap-6">
-              <ComplianceStat label="Últimos 7 días" value={compliance7} />
-              <ComplianceStat label="Últimos 30 días" value={compliance30} />
-            </CardContent>
-          </Card>
-        </Reveal>
-
-        <Reveal delay={0.12}>
-          <Card className="glass-panel rounded-3xl">
-            <CardHeader className="flex flex-row items-center justify-between gap-3">
-              <p className="font-display text-lg font-medium text-ink">
-                Registrar ejercicio
-              </p>
-              <Input
-                type="date"
-                value={date}
-                max={today}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-auto"
-              />
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              {MOMENTS.map((m, i) => {
-                const draft = drafts[m.id];
-                return (
-                  <motion.div
-                    key={m.id}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{
-                      duration: 0.35,
-                      delay: 0.15 + i * 0.05,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                    whileHover={{ y: -2 }}
-                    className={`flex flex-col gap-2 rounded-2xl border p-3 transition-colors sm:flex-row sm:items-center ${
-                      draft.done
-                        ? "border-brand-magenta/30 bg-accent/60"
-                        : "border-border bg-card"
-                    }`}
-                  >
-                    <div className="flex min-w-[170px] items-center gap-2">
-                      <Checkbox
-                        id={`moment-${m.id}`}
-                        checked={draft.done}
-                        onCheckedChange={(checked) =>
-                          setDrafts((prev) => ({
-                            ...prev,
-                            [m.id]: { ...prev[m.id], done: checked === true },
-                          }))
-                        }
-                      />
-                      <Label htmlFor={`moment-${m.id}`} className="font-heading font-semibold">
-                        <span className="mr-1">{m.icon}</span>
-                        {m.label}
-                      </Label>
-                    </div>
-                    <Input
-                      placeholder="¿Qué comiste?"
-                      value={draft.food}
-                      disabled={!draft.done}
-                      onChange={(e) =>
-                        setDrafts((prev) => ({
-                          ...prev,
-                          [m.id]: { ...prev[m.id], food: e.target.value },
-                        }))
-                      }
-                      className="flex-1"
-                    />
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={savingMoment === m.id}
-                      onClick={() => saveMoment(m.id)}
-                    >
-                      {savingMoment === m.id ? "Guardando..." : "Guardar"}
-                    </Button>
-                  </motion.div>
-                );
-              })}
-            </CardContent>
-          </Card>
-        </Reveal>
-
-        <Reveal delay={0.18}>
-          <Card className="glass-panel rounded-3xl">
-            <CardHeader>
-              <p className="font-display text-lg font-medium text-ink">Historial</p>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
-              {loadingEntries && (
-                <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>
-              )}
-              {!loadingEntries && history.length === 0 && (
-                <p className="py-6 text-center text-sm text-ink-soft">
-                  Aún no tienes registros.
-                </p>
-              )}
-              {history.map((entry, i) => (
-                <div key={entry.id}>
-                  {i > 0 && <Separator className="my-2" />}
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                          {momentLabel(entry.moment)}
-                        </Badge>
-                        <span className="text-xs text-ink-soft">{entry.date}</span>
-                      </div>
-                      <p className="text-sm">{entry.food}</p>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-ink-soft hover:text-brand-magenta"
-                      onClick={() => handleDelete(entry)}
-                    >
-                      Eliminar
-                    </Button>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
+          <div className="flex flex-col gap-6 lg:order-1">
+            <Reveal delay={0.08}>
+              <Card className="glass-panel rounded-3xl">
+                <CardHeader className="flex flex-row items-center justify-between gap-3">
+                  <div>
+                    <p className="font-display text-lg font-medium text-ink">
+                      Registrar ejercicio
+                    </p>
+                    <p className="text-xs text-ink-soft">
+                      {doneToday} de {MOMENTS.length} momentos hoy
+                    </p>
                   </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </Reveal>
+                  <Input
+                    type="date"
+                    value={date}
+                    max={today}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-auto"
+                  />
+                </CardHeader>
+                <CardContent className="flex flex-col gap-3">
+                  {MOMENTS.map((m, i) => {
+                    const draft = drafts[m.id];
+                    return (
+                      <motion.div
+                        key={m.id}
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          duration: 0.35,
+                          delay: 0.15 + i * 0.05,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        whileHover={{ y: -2 }}
+                        className={`flex flex-col gap-2 rounded-2xl border p-3 transition-colors sm:flex-row sm:items-center ${
+                          draft.done
+                            ? "border-brand-magenta/30 bg-accent/60"
+                            : "border-border bg-card"
+                        }`}
+                      >
+                        <div className="flex min-w-[170px] items-center gap-2">
+                          <Checkbox
+                            id={`moment-${m.id}`}
+                            checked={draft.done}
+                            onCheckedChange={(checked) =>
+                              setDrafts((prev) => ({
+                                ...prev,
+                                [m.id]: { ...prev[m.id], done: checked === true },
+                              }))
+                            }
+                          />
+                          <Label
+                            htmlFor={`moment-${m.id}`}
+                            className="font-heading font-semibold"
+                          >
+                            <span className="mr-1">{m.icon}</span>
+                            {m.label}
+                          </Label>
+                        </div>
+                        <Input
+                          placeholder="¿Qué comiste?"
+                          value={draft.food}
+                          disabled={!draft.done}
+                          onChange={(e) =>
+                            setDrafts((prev) => ({
+                              ...prev,
+                              [m.id]: { ...prev[m.id], food: e.target.value },
+                            }))
+                          }
+                          className="flex-1"
+                        />
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={savingMoment === m.id}
+                          onClick={() => saveMoment(m.id)}
+                        >
+                          {savingMoment === m.id ? "Guardando..." : "Guardar"}
+                        </Button>
+                      </motion.div>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            </Reveal>
+
+            <Reveal delay={0.2}>
+              <Card className="glass-panel rounded-3xl">
+                <CardHeader>
+                  <p className="font-display text-lg font-medium text-ink">Historial</p>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-2">
+                  {loadingEntries && (
+                    <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>
+                  )}
+                  {!loadingEntries && history.length === 0 && (
+                    <p className="py-6 text-center text-sm text-ink-soft">
+                      Aún no tienes registros.
+                    </p>
+                  )}
+                  {history.map((entry, i) => (
+                    <div key={entry.id}>
+                      {i > 0 && <Separator className="my-2" />}
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-2">
+                            <Badge
+                              variant="secondary"
+                              className="bg-accent text-accent-foreground"
+                            >
+                              {momentLabel(entry.moment)}
+                            </Badge>
+                            <span className="text-xs text-ink-soft">{entry.date}</span>
+                          </div>
+                          <p className="text-sm">{entry.food}</p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-ink-soft hover:text-brand-magenta"
+                          onClick={() => handleDelete(entry)}
+                        >
+                          Eliminar
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </Reveal>
+          </div>
+
+          <Reveal delay={0.02} className="lg:sticky lg:top-6 lg:order-2">
+            <Card className="glass-panel rounded-3xl">
+              <CardHeader>
+                <p className="font-display text-lg font-medium text-ink">
+                  Tu cumplimiento
+                </p>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center gap-6 sm:flex-row sm:justify-around lg:flex-col">
+                <ComplianceRing value={compliance7} label="Últimos 7 días" size={132} />
+                <ComplianceRing value={compliance30} label="Últimos 30 días" size={104} />
+              </CardContent>
+            </Card>
+          </Reveal>
+        </div>
       </div>
     </div>
   );
 }
 
-function ComplianceStat({ label, value }: { label: string; value: number }) {
+function ComplianceRing({
+  value,
+  label,
+  size = 120,
+}: {
+  value: number;
+  label: string;
+  size?: number;
+}) {
   const reduce = useReducedMotion();
+  const gradientId = useId();
+  const stroke = 10;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+
   return (
-    <div className="flex flex-1 flex-col gap-1.5">
-      <div className="flex items-baseline justify-between">
-        <span className="text-xs text-ink-soft">{label}</span>
-        <span className="font-display text-base font-semibold text-brand-purple-dark">
-          <AnimatedNumber value={value} suffix="%" />
-        </span>
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="-rotate-90">
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="var(--brand-magenta)" />
+              <stop offset="100%" stopColor="var(--brand-purple)" />
+            </linearGradient>
+          </defs>
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            strokeWidth={stroke}
+            className="stroke-accent"
+            fill="none"
+          />
+          <motion.circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            strokeWidth={stroke}
+            stroke={`url(#${gradientId})`}
+            strokeLinecap="round"
+            fill="none"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            animate={{
+              strokeDashoffset: circumference - (value / 100) * circumference,
+            }}
+            transition={{ duration: reduce ? 0 : 1, ease: [0.16, 1, 0.3, 1] }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="font-display text-xl font-semibold text-brand-purple-dark">
+            <AnimatedNumber value={value} suffix="%" />
+          </span>
+        </div>
       </div>
-      <div className="h-2 w-full overflow-hidden rounded-full bg-accent">
-        <motion.div
-          className="h-full brand-gradient"
-          initial={{ width: 0 }}
-          animate={{ width: `${value}%` }}
-          transition={{ duration: reduce ? 0 : 0.8, ease: [0.16, 1, 0.3, 1] }}
-        />
-      </div>
+      <span className="text-xs text-ink-soft">{label}</span>
     </div>
   );
 }

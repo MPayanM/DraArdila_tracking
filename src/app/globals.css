@@ -8,7 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-nunito);
-  --font-heading: var(--font-poppins);
+  --font-heading: var(--font-sora);
   --font-display: var(--font-fraunces);
   --color-brand-purple-dark: var(--brand-purple-dark);
   --color-brand-purple: var(--brand-purple);
@@ -160,7 +160,7 @@
     @apply font-sans;
   }
   h1, h2, h3, h4 {
-    font-family: var(--font-poppins);
+    font-family: var(--font-sora);
   }
 }
 

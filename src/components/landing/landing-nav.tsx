@@ -1,25 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BrandMark } from "@/components/brand-mark";
 
 export function LandingNav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 glass-panel">
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-2.5 sm:px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/fono.webp"
-            alt="Logo Dra. Sandra Ardila"
-            width={68}
-            height={68}
-            className="rounded-xl shadow-sm"
-            priority
-          />
-          <span className="font-heading text-lg font-bold text-brand-purple-dark">
-            Sandra Ardila
-          </span>
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+        <Link href="/">
+          <BrandMark size={44} textClassName="text-lg" />
         </Link>
         <nav className="flex items-center gap-2 sm:gap-3">
           <Button

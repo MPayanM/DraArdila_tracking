@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Nunito, Poppins, Fraunces } from "next/font/google";
+import { Nunito, Sora, Fraunces } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { PageTransition } from "@/components/page-transition";
+import { RouteProgress } from "@/components/route-progress";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -10,10 +11,10 @@ const nunito = Nunito({
   weight: ["400", "600", "700", "800"],
 });
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
 });
 
 const fraunces = Fraunces({
@@ -41,9 +42,10 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${nunito.variable} ${poppins.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${nunito.variable} ${sora.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <RouteProgress />
         <PageTransition>{children}</PageTransition>
         <Toaster position="top-center" />
       </body>

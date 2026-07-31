@@ -1,4 +1,7 @@
+"use client";
+
 import { ClipboardCheck, LineChart, UserRound } from "lucide-react";
+import { motion } from "framer-motion";
 import { Reveal } from "@/components/reveal";
 
 const STEPS = [
@@ -35,7 +38,11 @@ export function HowItWorks() {
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {STEPS.map((step, i) => (
             <Reveal key={step.title} delay={i * 0.1}>
-              <div className="relative flex h-full flex-col gap-4 rounded-3xl border border-border bg-card p-7 shadow-sm">
+              <motion.div
+                whileHover={{ y: -5, scale: 1.015 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="relative flex h-full flex-col gap-4 rounded-3xl border border-border bg-card p-7 shadow-sm hover:shadow-lg"
+              >
                 <span className="font-display text-sm text-brand-magenta">
                   0{i + 1}
                 </span>
@@ -48,7 +55,7 @@ export function HowItWorks() {
                 <p className="text-sm leading-relaxed text-ink-soft">
                   {step.description}
                 </p>
-              </div>
+              </motion.div>
             </Reveal>
           ))}
         </div>

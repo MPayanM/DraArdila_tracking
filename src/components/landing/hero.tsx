@@ -1,18 +1,25 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { HeroOrbCanvas } from "@/components/three/hero-orb-canvas";
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const auroraY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 120]);
 
   return (
-    <section className="relative isolate overflow-hidden">
-      <div className="aurora-bg" aria-hidden>
+    <section ref={sectionRef} className="relative isolate overflow-hidden">
+      <motion.div className="aurora-bg" style={{ y: auroraY }} aria-hidden>
         <span className="aurora-blob" />
-      </div>
+      </motion.div>
 
       <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:gap-6 lg:py-28">
         <motion.div

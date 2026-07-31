@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BellRing,
   CalendarClock,
@@ -6,6 +8,7 @@ import {
   SlidersHorizontal,
   Smartphone,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Reveal } from "@/components/reveal";
 
 const FEATURES = [
@@ -62,7 +65,11 @@ export function FeaturesGrid() {
       <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map((feature, i) => (
           <Reveal key={feature.title} delay={(i % 3) * 0.08}>
-            <div className="group h-full rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-brand-magenta/40">
+            <motion.div
+              whileHover={{ y: -5, scale: 1.015 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="group h-full rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors hover:border-brand-magenta/40 hover:shadow-lg"
+            >
               <div className="flex size-10 items-center justify-center rounded-lg bg-accent text-brand-purple transition-colors group-hover:bg-brand-magenta group-hover:text-white">
                 <feature.icon className="size-5" strokeWidth={2} />
               </div>
@@ -72,7 +79,7 @@ export function FeaturesGrid() {
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           </Reveal>
         ))}
       </div>

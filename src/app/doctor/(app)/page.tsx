@@ -122,183 +122,210 @@ export default function DoctorDashboard() {
     [patients, entries]
   );
 
+  const avgCompliance7 = useMemo(() => {
+    if (rows.length === 0) return 0;
+    return Math.round(rows.reduce((sum, r) => sum + r.compliance7, 0) / rows.length);
+  }, [rows]);
+
   return (
     <div className="flex flex-col gap-6">
       <Reveal>
-        <h1 className="font-display text-3xl font-medium text-ink">
-          Pacientes
-        </h1>
+        <h1 className="font-display text-3xl font-medium text-ink">Pacientes</h1>
         <p className="text-sm text-ink-soft">
           Gestiona pacientes y revisa su cumplimiento del ejercicio.
         </p>
       </Reveal>
 
-      {newPatients.length > 0 && (
-        <Reveal delay={0.06}>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {[
+          { label: "Pacientes activos", value: patients.length },
+          { label: "Cumplimiento promedio (7d)", value: avgCompliance7, suffix: "%" },
+          { label: "Nuevos esta semana", value: newPatients.length },
+        ].map((stat, i) => (
+          <Reveal key={stat.label} delay={0.04 + i * 0.05}>
+            <Card className="glass-panel rounded-2xl">
+              <CardContent className="py-5">
+                <p className="text-xs font-medium text-ink-soft">{stat.label}</p>
+                <p className="font-display text-3xl font-semibold text-brand-purple-dark">
+                  <AnimatedNumber value={stat.value} suffix={stat.suffix ?? ""} />
+                </p>
+              </CardContent>
+            </Card>
+          </Reveal>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_300px] lg:items-start">
+        <Reveal delay={0.22} className="lg:order-1">
           <Card className="glass-panel rounded-3xl">
             <CardHeader>
               <p className="font-display text-lg font-medium text-ink">
-                Nuevos pacientes (últimos 7 días)
+                Todos los pacientes
               </p>
             </CardHeader>
-            <CardContent className="flex flex-wrap gap-2">
-              {newPatients.map((p) => (
-                <Link key={p.id} href={`/doctor/pacientes/${p.id}`}>
-                  <Badge
-                    variant="secondary"
-                    className="bg-accent text-accent-foreground hover:opacity-80"
-                  >
-                    {p.name}
-                  </Badge>
-                </Link>
-              ))}
+            <CardContent>
+              {loading && (
+                <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>
+              )}
+              {!loading && rows.length === 0 && (
+                <p className="py-6 text-center text-sm text-ink-soft">
+                  Aún no hay pacientes registrados.
+                </p>
+              )}
+              {!loading && rows.length > 0 && (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nombre</TableHead>
+                      <TableHead>7 días</TableHead>
+                      <TableHead>30 días</TableHead>
+                      <TableHead className="text-right">Acciones</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {rows.map(({ patient, compliance7, compliance30 }, i) => (
+                      <motion.tr
+                        key={patient.id}
+                        data-slot="table-row"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.3,
+                          delay: i * 0.05,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        className="border-b transition-colors last:border-b-0 hover:bg-accent/50"
+                      >
+                        <TableCell>
+                          <Link
+                            href={`/doctor/pacientes/${patient.id}`}
+                            className="font-semibold text-brand-purple-dark hover:underline"
+                          >
+                            {patient.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <AnimatedNumber value={compliance7} suffix="%" />
+                        </TableCell>
+                        <TableCell>
+                          <AnimatedNumber value={compliance30} suffix="%" />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <AlertDialog>
+                            <AlertDialogTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-ink-soft hover:text-brand-magenta"
+                                >
+                                  Eliminar
+                                </Button>
+                              }
+                            />
+
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  ¿Eliminar a {patient.name}?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Se eliminará el paciente y todos sus registros de
+                                  ejercicio. Esta acción no se puede deshacer.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(patient)}>
+                                  Eliminar
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </TableCell>
+                      </motion.tr>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </Reveal>
-      )}
 
-      <Reveal delay={0.12}>
-        <Card className="glass-panel rounded-3xl">
-          <CardHeader>
-            <p className="font-display text-lg font-medium text-ink">
-              Agregar paciente
-            </p>
-          </CardHeader>
-          <CardContent>
-            <form
-              onSubmit={handleAddPatient}
-              className="grid grid-cols-1 gap-3 sm:grid-cols-[2fr_1fr_1fr_auto] sm:items-end"
-            >
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="new-name">Nombre</Label>
-                <Input
-                  id="new-name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Nombre completo"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="new-phone">Teléfono (opcional)</Label>
-                <Input
-                  id="new-phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <Label htmlFor="new-email">Correo (opcional)</Label>
-                <Input
-                  id="new-email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <Button
-                type="submit"
-                disabled={adding || !name.trim()}
-                className="brand-gradient text-white hover:opacity-90"
-              >
-                {adding ? "Agregando..." : "Agregar"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </Reveal>
-
-      <Reveal delay={0.18}>
-        <Card className="glass-panel rounded-3xl">
-          <CardHeader>
-            <p className="font-display text-lg font-medium text-ink">
-              Todos los pacientes
-            </p>
-          </CardHeader>
-          <CardContent>
-            {loading && <p className="py-6 text-center text-sm text-ink-soft">Cargando...</p>}
-            {!loading && rows.length === 0 && (
-              <p className="py-6 text-center text-sm text-ink-soft">
-                Aún no hay pacientes registrados.
-              </p>
-            )}
-            {!loading && rows.length > 0 && (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Nombre</TableHead>
-                    <TableHead>7 días</TableHead>
-                    <TableHead>30 días</TableHead>
-                    <TableHead className="text-right">Acciones</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {rows.map(({ patient, compliance7, compliance30 }, i) => (
-                    <motion.tr
-                      key={patient.id}
-                      data-slot="table-row"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.3,
-                        delay: i * 0.05,
-                        ease: [0.16, 1, 0.3, 1],
-                      }}
-                      className="border-b transition-colors last:border-b-0 hover:bg-accent/50"
-                    >
-                      <TableCell>
-                        <Link
-                          href={`/doctor/pacientes/${patient.id}`}
-                          className="font-semibold text-brand-purple-dark hover:underline"
-                        >
-                          {patient.name}
-                        </Link>
-                      </TableCell>
-                      <TableCell>
-                        <AnimatedNumber value={compliance7} suffix="%" />
-                      </TableCell>
-                      <TableCell>
-                        <AnimatedNumber value={compliance30} suffix="%" />
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <AlertDialog>
-                          <AlertDialogTrigger
-                            render={
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="text-ink-soft hover:text-brand-magenta"
-                              >
-                                Eliminar
-                              </Button>
-                            }
-                          />
-
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>¿Eliminar a {patient.name}?</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Se eliminará el paciente y todos sus registros de ejercicio.
-                                Esta acción no se puede deshacer.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(patient)}>
-                                Eliminar
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </TableCell>
-                    </motion.tr>
+        <div className="flex flex-col gap-6 lg:order-2 lg:sticky lg:top-6">
+          {newPatients.length > 0 && (
+            <Reveal delay={0.1}>
+              <Card className="glass-panel rounded-3xl">
+                <CardHeader>
+                  <p className="font-display text-base font-medium text-ink">
+                    Nuevos (últimos 7 días)
+                  </p>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-2">
+                  {newPatients.map((p) => (
+                    <Link key={p.id} href={`/doctor/pacientes/${p.id}`}>
+                      <Badge
+                        variant="secondary"
+                        className="bg-accent text-accent-foreground hover:opacity-80"
+                      >
+                        {p.name}
+                      </Badge>
+                    </Link>
                   ))}
-                </TableBody>
-              </Table>
-            )}
-          </CardContent>
-        </Card>
-      </Reveal>
+                </CardContent>
+              </Card>
+            </Reveal>
+          )}
+
+          <Reveal delay={0.16}>
+            <Card className="glass-panel rounded-3xl">
+              <CardHeader>
+                <p className="font-display text-base font-medium text-ink">
+                  Agregar paciente
+                </p>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleAddPatient} className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="new-name">Nombre</Label>
+                    <Input
+                      id="new-name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Nombre completo"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="new-phone">Teléfono (opcional)</Label>
+                    <Input
+                      id="new-phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="new-email">Correo (opcional)</Label>
+                    <Input
+                      id="new-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={adding || !name.trim()}
+                    className="brand-gradient text-white hover:opacity-90"
+                  >
+                    {adding ? "Agregando..." : "Agregar"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </Reveal>
+        </div>
+      </div>
     </div>
   );
 }

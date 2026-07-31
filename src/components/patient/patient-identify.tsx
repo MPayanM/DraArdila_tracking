@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -10,6 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { HeroOrbCanvas } from "@/components/three/hero-orb-canvas";
+import { BrandIcon } from "@/components/brand-mark";
 
 export function PatientIdentify({
   onIdentify,
@@ -50,14 +50,7 @@ export function PatientIdentify({
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 mb-6 flex flex-col items-center gap-4 text-center"
       >
-        <Image
-          src="/fono.webp"
-          alt="Logo Dra. Sandra Ardila"
-          width={168}
-          height={168}
-          className="rounded-3xl shadow-lg ring-1 ring-border/60"
-          priority
-        />
+        <BrandIcon size={96} className="drop-shadow-lg" />
         <div>
           <h1 className="font-display text-3xl font-medium text-ink sm:text-4xl">
             Ejercicio de masticación y deglución
